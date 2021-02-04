@@ -5,4 +5,7 @@ class Customer < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   has_many :expenses
+  has_many :my_groups, class_name: 'Group'
+  has_many :memberships
+  has_many :groups, through: :memberships
 end

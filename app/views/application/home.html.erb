@@ -2,6 +2,7 @@
 <% if customer_signed_in? %>
   <%= link_to 'Sign Out', destroy_customer_session_path, method: :delete %>
   <%= link_to 'Expenses', expenses_path %>
+  <%= link_to 'Groups', groups_path %>
 <% else %>
   <%= link_to 'Sign In', new_customer_session_path %>
 <% end %>

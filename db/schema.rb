@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_24_115946) do
+ActiveRecord::Schema.define(version: 2021_02_03_145416) do
 
   create_table "customers", charset: "utf8mb4", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -26,13 +26,36 @@ ActiveRecord::Schema.define(version: 2021_01_24_115946) do
 
   create_table "expenses", charset: "utf8mb4", force: :cascade do |t|
     t.bigint "customer_id", null: false
+    t.bigint "group_id"
     t.string "title"
     t.float "amount"
     t.string "description"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["customer_id"], name: "index_expenses_on_customer_id"
+    t.index ["group_id"], name: "index_expenses_on_group_id"
+  end
+
+  create_table "groups", charset: "utf8mb4", force: :cascade do |t|
+    t.bigint "customer_id", null: false
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["customer_id"], name: "index_groups_on_customer_id"
+  end
+
+  create_table "memberships", charset: "utf8mb4", force: :cascade do |t|
+    t.bigint "customer_id", null: false
+    t.bigint "group_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["customer_id"], name: "index_memberships_on_customer_id"
+    t.index ["group_id"], name: "index_memberships_on_group_id"
   end
 
   add_foreign_key "expenses", "customers"
+  add_foreign_key "expenses", "groups"
+  add_foreign_key "groups", "customers"
+  add_foreign_key "memberships", "customers"
+  add_foreign_key "memberships", "groups"
 end
