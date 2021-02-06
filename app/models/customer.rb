@@ -8,4 +8,6 @@ class Customer < ApplicationRecord
   has_many :my_groups, class_name: 'Group'
   has_many :memberships
   has_many :groups, through: :memberships
+  has_many :ownerships
+  has_many :owner_of_groups, through: :ownerships, source: :group
 end

@@ -1,9 +1,9 @@
 module GroupsHelper
-  def group_owner? group
-    current_customer == group.owner
+  def group_admin? customer, group
+    group.admins.pluck(:id).include?(customer.id)
   end
 
-  def authorize_to_edit_expense? group, expense
-    group_owner?(group) || expense_owner?(current_customer, expense)
+  def authorize_to_edit_expense? customer, group, expense
+    group_admin?(customer, group) || expense_owner?(customer, expense)
   end
 end

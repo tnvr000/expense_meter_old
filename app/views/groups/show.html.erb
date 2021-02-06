@@ -1,8 +1,8 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <strong>Owner:</strong>
-  <%= @group.owner.email %>
+  <strong>Created By:</strong>
+  <%= @group.creator.email %>
 </p>
 
 <p>
@@ -32,11 +32,52 @@
           <td><%= expense.description %></td>
           <td><%= link_to 'Show', expense %></td>
           <td><%= link_to 'Edit', edit_expense_path(expense) %></td>
-          <td><%= link_to 'Destroy', expense, method: :delete, data: { confirm: 'Are you sure?' } if authorize_to_edit_expense?(@group, expense) %></td>
+          <td><%= link_to 'Destroy', expense, method: :delete, data: { confirm: 'Are you sure?' } if authorize_to_edit_expense?(current_customer, @group, expense) %></td>
         </tr>
       <% end %>
     </tbody>
   </table>
+</div>
+
+<div>
+  <h3>Members</h3>
+  <% if @group.members.present? %>
+    <table>
+      <thead>
+        <th>Name</th>
+        <th>Spent</th>
+        <th>Action</th>
+      </thead>
+      <tbody>
+        <% @group.members.map do |member| %>
+          <tr>
+            <td><%= member.email %> <%= group_admin?(member, @group) ? 'Admin' : '' %></td>
+            <td>work in progress</td>
+            <% if group_admin?(current_customer, @group) %>
+              <td>
+                <% if group_admin?(member, @group) %>
+                  <%= form_tag(demote_to_member_group_path(@group), method: :post) do  %>
+                    <%= hidden_field_tag(:member_id, member.id) %>
+                    <%= submit_tag('Demote To Member') %>
+                  <% end %>
+                <% else %>
+                  <%= form_tag(promote_to_admin_group_path(@group), method: :post) do  %>
+                    <%= hidden_field_tag(:member_id, member.id) %>
+                    <%= submit_tag('Promote To Admin') %>
+                  <% end %>
+                <% end %>
+              </td>
+            <% end %>
+          </tr>
+        <% end %>
+      </tbody>
+      <tfoot>
+        
+      </tfoot>
+    </table>
+  <% else %>
+    <div>No Members</div>
+  <% end %>
 </div>
 
 <%= link_to 'Edit', edit_group_path(@group) %> |

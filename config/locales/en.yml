@@ -31,3 +31,10 @@
 
 en:
   hello: "Hello world"
+  groups:
+    not_a_member: 'Customer is not a member of this group.'
+    last_admin: 'Can not demote the admin. There must be at least 1 admin'
+    promoted_to_admin: 'Member is promoted to admin.'
+    not_promoted_to_admin: 'Member could not be promoted to admin.'
+    demoted_to_member: 'Admin demoted to member.'
+    not_demoted_to_member: 'Admin could not be demoted to member.'

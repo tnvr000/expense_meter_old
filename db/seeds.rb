@@ -16,9 +16,15 @@ puts 'Groups created'
 
 group1.members << customer1
 group1.members << customer2
+group1.members << customer3
 group2.members << customer2
 group2.members << customer3
 puts 'added members to group'
+
+group1.admins << customer1
+group1.admins << customer2
+group2.admins << customer3
+puts 'added admins of groups'
 
 customer1.expenses.create(
   [
@@ -66,6 +72,11 @@ customer3.expenses.create(
       title: 'Resort',
       amount: 5000.0,
       description: 'AC Tent'
+    }, {
+      group_id: group1.id,
+      title: 'Ration',
+      amount: 1000.0,
+      description: 'Ration to cook food'
     }
   ]
 )
