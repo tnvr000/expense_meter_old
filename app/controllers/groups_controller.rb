@@ -5,7 +5,7 @@ class GroupsController < ApplicationController
   # GET /groups
   # GET /groups.json
   def index
-    @groups = current_customer.groups.includes(:creator)
+    @groups = current_customer.groups.includes(:created_by)
   end
 
   # GET /groups/1
@@ -97,7 +97,7 @@ class GroupsController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_group
-    @group = current_customer.groups.includes(:creator, :admins).find(params[:id])
+    @group = current_customer.groups.includes(:created_by, :admins).find(params[:id])
   end
 
   # Only allow a list of trusted parameters through.

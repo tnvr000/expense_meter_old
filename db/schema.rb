@@ -37,11 +37,10 @@ ActiveRecord::Schema.define(version: 2021_02_05_154137) do
   end
 
   create_table "groups", charset: "utf8mb4", force: :cascade do |t|
-    t.bigint "customer_id", null: false
+    t.string "customer_email", null: false
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["customer_id"], name: "index_groups_on_customer_id"
   end
 
   create_table "memberships", charset: "utf8mb4", force: :cascade do |t|
@@ -64,7 +63,6 @@ ActiveRecord::Schema.define(version: 2021_02_05_154137) do
 
   add_foreign_key "expenses", "customers"
   add_foreign_key "expenses", "groups"
-  add_foreign_key "groups", "customers"
   add_foreign_key "memberships", "customers"
   add_foreign_key "memberships", "groups"
   add_foreign_key "ownerships", "customers"
