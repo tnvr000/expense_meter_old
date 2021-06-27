@@ -39,6 +39,7 @@ ActiveRecord::Schema.define(version: 2021_02_05_154137) do
   create_table "groups", charset: "utf8mb4", force: :cascade do |t|
     t.string "customer_email", null: false
     t.string "name"
+    t.string "token"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

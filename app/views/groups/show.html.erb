@@ -30,7 +30,7 @@
           <td><%= expense.title %></td>
           <td><%= expense.amount %></td>
           <td><%= expense.description %></td>
-          <td><%= link_to 'Show', expense %></td>
+          <td><%= link_to 'Show', expense_path(expense, group_id: @group.id) %></td>
           <td><%= link_to 'Edit', edit_expense_path(expense) %></td>
           <td><%= link_to 'Destroy', expense, method: :delete, data: { confirm: 'Are you sure?' } if authorize_to_edit_expense?(current_customer, @group, expense) %></td>
         </tr>
@@ -46,7 +46,7 @@
       <thead>
         <th>Name</th>
         <th>Spent</th>
-        <th>Action</th>
+        <th colspan="2">Action</th>
       </thead>
       <tbody>
         <% @group.members.map do |member| %>
@@ -67,6 +67,12 @@
                   <% end %>
                 <% end %>
               </td>
+              <td>
+                <%= form_tag(remove_member_group_path(@group), method: :post) do %>
+                  <%= hidden_field_tag(:member_id, member.id) %>
+                  <%= submit_tag(remove_member_button_name(member)) %>
+                <% end %>
+              </td>
             <% end %>
           </tr>
         <% end %>
@@ -81,4 +87,5 @@
 </div>
 
 <%= link_to 'Edit', edit_group_path(@group) %> |
-<%= link_to 'Back', groups_path %>
+<%= link_to 'Back', groups_path %> |
+<%= link_to 'Add Member', add_member_group_path(@group) %>

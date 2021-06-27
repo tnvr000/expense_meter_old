@@ -7,6 +7,11 @@ Rails.application.routes.draw do
     member do
       post :demote_to_member
       post :promote_to_admin
+      get :add_member
+      post :remove_member
+      post :make_member
+      get :invitation
+      post :accept_invitation
     end
   end
 end

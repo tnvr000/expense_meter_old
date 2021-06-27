@@ -64,13 +64,26 @@ class ExpensesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_expense
-      @expense = current_customer.expenses.includes(:customer).find(params[:id])
-    end
+  
+  # Use callbacks to share common setup or constraints between actions.
+  def set_expense
+    @expense =
+      if authorized_customer?
+        @group = Group.find_by(id: params[:group_id])
+        Expense.where(id: params[:id], group_id: params[:group_id]).first
+      else
+        current_customer.expenses.includes(:customer).find(params[:id])
+      end
+  end
 
-    # Only allow a list of trusted parameters through.
-    def expense_params
-      params.require(:expense).permit(:title, :amount, :description)
-    end
+  # Only allow a list of trusted parameters through.
+  def expense_params
+    params.require(:expense).permit(:title, :amount, :description)
+  end
+
+  # checks if expense is accessed via a group and if it has authorisation to access the expense
+  # All the members of group of which the expense belongs to is authorized
+  def authorized_customer?
+    params[:group_id].present? && Membership.exists?(group_id: params[:group_id], customer_id: current_customer.id)
+  end
 end

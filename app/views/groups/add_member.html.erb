@@ -1,0 +1,15 @@
+<h2>Add Member to Group</h2>
+<h3>Sharable Link</h3>
+<div><%= invitation_group_url(@group, token: @group.token) %></div>
+<div>
+  <%= form_tag(make_member_group_path(@group)) do %>
+    <div>
+      <%= text_field_tag(:email) %>
+    </div>
+    <div>
+      <%= submit_tag('Add To Group') %>
+    </div>
+  <% end %>
+</div>
+
+<%= link_to('Back', group_path(@group)) %>

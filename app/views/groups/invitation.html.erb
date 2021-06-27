@@ -1,0 +1,9 @@
+<h2>Invitation</h2>
+<h3>Group</h3>
+<h4>Name: </h4>
+<div><%= @group.name %></div>
+<h4>No. of Members :</h4>
+<div><%= @member_count %></div>
+<%= form_tag(accept_invitation_group_path(@group)) do %>
+  <%= submit_tag('Join Group') %>
+<% end %>

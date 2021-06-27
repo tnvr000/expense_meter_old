@@ -1,5 +1,8 @@
 <h2>Welcome</h2>
 <% if customer_signed_in? %>
+  <div>
+    Hi, <%= current_customer.email %>
+  </div>
   <%= link_to 'Sign Out', destroy_customer_session_path, method: :delete %>
   <%= link_to 'Expenses', expenses_path %>
   <%= link_to 'Groups', groups_path %>

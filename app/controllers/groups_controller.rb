@@ -8,8 +8,9 @@ class GroupsController < ApplicationController
     @groups = current_customer.groups.includes(:created_by)
   end
 
-  # GET /groups/1
-  # GET /groups/1.json
+  # GET /groups/:id
+  # GET /groups/:id.json
+  # @param id [String]
   def show
     @expenses = @group.expenses.includes(:customer)
   end
@@ -19,12 +20,14 @@ class GroupsController < ApplicationController
     @group = Group.new
   end
 
-  # GET /groups/1/edit
+  # GET /groups/:id/edit
+  # @param id [String]
   def edit
   end
 
   # POST /groups
   # POST /groups.json
+  # @param name [String]
   def create
     @group = current_customer.groups.build(group_params)
 
@@ -41,10 +44,12 @@ class GroupsController < ApplicationController
 
   # POST /groups/:id/promote_to_admin
   # POST /groups/:id/promote_to_admin.json
+  # @param id [String]
+  # @param member_id [String]
   def promote_to_admin
     group = current_customer.groups.includes(:members, :admins).find_by_id(params[:id])
     member = Customer.find_by_id(params[:member_id])
-    if member_of_group?(member, group)
+    if group.member_of_group?(member)
       make_member_an_admin(member, group)
     else
       flash[:alert] = t('groups.not_a_member')
@@ -54,23 +59,81 @@ class GroupsController < ApplicationController
 
   # POST /groups/:id/demote_to_member
   # POST /groups/:id/demote_to_member.json
+  # @param id [String]
+  # @param admin_id [String]
   def demote_to_member
     group = current_customer.groups.find_by_id(params[:id])
     admin = Customer.find_by_id(params[:member_id])
-    if group_have_multiple_admins(group)
-      if group.admins.delete(admin)
-        flash[:notice] = t('groups.demoted_to_member')
-      else
-        flash[:alert] = t('groups.not_demoted_to_member')
-      end
+    if group.multiple_admins?
+      make_admin_a_member(admin, group)
     else
       flash[:alert] = t('groups.last_admin')
     end
     redirect_to group_path(group)
   end
 
-  # PATCH/PUT /groups/1
-  # PATCH/PUT /groups/1.json
+  # GET /groups/:id/add_member
+  # @param id [String]
+  def add_member
+    @group = current_customer.groups.includes(:admins).find_by_id(params[:id])
+    @group.generate_token if @group.token.blank?
+  end
+
+  # POST /groups/:id/remove_member
+  # @param id [String]
+  # @param member_id [String]
+  def remove_member
+    @group = current_customer.groups.find_by(id: params[:id])
+    redirect_to(groups_path, alert: 'Group Does not exists') and return if @group.blank?
+
+    @member = Customer.find_by(id: params[:member_id])
+    redirect_to(group_path(@group)) and return if member_removable?(@group, @member)
+
+    @group.remove_member(@member)
+  end
+
+  # POST /groups/:id/make_member
+  # @param id [String]
+  # @param email [String]
+  def make_member
+    @group = current_customer.groups.find_by(id: params[:id])
+    redirect_to(groups_path, alert: 'Group does not exists') and return if @group.blank?
+    redirect_to(group_path(@group), alert: 'Not authorized') and return if @group.member_an_admin?(current_customer)
+
+    @member = Customer.find_by(email: params[:email])
+    redirect_to(add_member_group_path(@group), alert: 'Customer does not exists') and return if @member.blank?
+    redirect_to(group_path(@group), alert: 'Already a member') and return if @group.member_of_group?(@member)
+
+    @group.make_member(member)
+    redirect_to(group_path(@group), notice: 'Member is added')
+  end
+
+  # GET /groups/:id/invitation
+  # @param id
+  # @param token
+  def invitation
+    @group = Group.where('groups.id = ? AND groups.token = ?', params[:id], params[:token]).first
+    redirect_to(root_path) and return if @group.blank?
+    redirect_to(group_path(@group), notice: 'Already a member') and return if @group.member_of_group?(current_customer)
+
+    @member_count = @group.members.count
+  end
+
+  # POST /groups/:id/accept_invitation
+  # @param id
+  def accept_invitation
+    @group = Group.find_by(id: params[:id])
+    redirect_to(root_path) and return if @group.blank?
+    redirect_to(group_path(@group), notice: 'Already a member') and return if @group.member_of_group?(current_customer)
+
+    @group.members << current_customer
+    redirect_to(group_path(@group), notice: 'Became a member')
+  end
+
+  # PATCH/PUT /groups/:id
+  # PATCH/PUT /groups/:id.json
+  # @param id
+  # @param name
   def update
     respond_to do |format|
       if @group.update(group_params)
@@ -83,8 +146,9 @@ class GroupsController < ApplicationController
     end
   end
 
-  # DELETE /groups/1
-  # DELETE /groups/1.json
+  # DELETE /groups/:id
+  # DELETE /groups/:id.json
+  # @param id
   def destroy
     @group.destroy
     respond_to do |format|
@@ -105,19 +169,51 @@ class GroupsController < ApplicationController
     params.require(:group).permit(:name)
   end
 
-  def member_of_group? member, group
-    group.members.pluck(:id).include?(member.id)
-  end
-
+  # make the given member an admin of the given group
+  # @param member [Customer]
+  # @param group [Group]
   def make_member_an_admin member, group
-    if group.admins << member
+    if group.make_member_an_admin(member)
       flash[:notice] = t('groups.promoted_to_admin')
     else
       flash[:alert] = t('groups.not_promoted_to_admin')
     end
   end
+  # make the given admin a member of the given group
+  # @param admin [Customer]
+  # @param group [Group]
+  def make_admin_a_member admin, group
+    if group.make_admin_a_member(admin)
+      flash[:notice] = t('groups.demoted_to_member')
+    else
+      flash[:alert] = t('groups.not_demoted_to_member')
+    end
+  end
 
-  def group_have_multiple_admins group
-    group.admins.count > 1
+  # checks if the given member is currently signed in customer
+  # @param member [Customer]
+  # @return Boolean [FalseClass, TrueClass]
+  def member_current_customer? member
+    member.id == current_customer.id
+  end
+
+  # checks if the given member of the given group can be removed
+  # @param group [Group]
+  # @param member [Customer]
+  # @return Boolean
+  def member_removable? group, member
+    status = false
+    if member.blank?
+      flash[:alert] = 'Member does not exists.'
+    elsif !member.member_of_group?(member)
+      flash[:alert] = 'Not a member.'
+    elsif !group.multiple_members?
+      flash[:alert] = 'You are the last member'
+    elsif !group.member_an_admin?(current_customer) && !member_current_customer?(member)
+      flash[:alert] = 'Unauthorized access'
+    else
+      status = true
+    end
+    return status
   end
 end
