@@ -31,8 +31,8 @@
           <td><%= expense.amount %></td>
           <td><%= expense.description %></td>
           <td><%= link_to 'Show', expense_path(expense, group_id: @group.id) %></td>
-          <td><%= link_to 'Edit', edit_expense_path(expense) %></td>
-          <td><%= link_to 'Destroy', expense, method: :delete, data: { confirm: 'Are you sure?' } if authorize_to_edit_expense?(current_customer, @group, expense) %></td>
+          <td><%= link_to 'Edit', edit_expense_path(expense, group_id: @group.id) %></td>
+          <td><%= link_to 'Destroy', expense_path(expense, group_id: @group.id), method: :delete, data: { confirm: 'Are you sure?' } if authorize_to_edit_expense?(current_customer, @group, expense) %></td>
         </tr>
       <% end %>
     </tbody>

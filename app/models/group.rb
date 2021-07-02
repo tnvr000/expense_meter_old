@@ -7,8 +7,6 @@ class Group < ApplicationRecord
   has_many :ownerships
   has_many :admins, through: :ownerships, source: :customer
 
-  validates :token, presence: true
-
   # Checks if the given customer is a member of the associated group
   # @param customer [Customer]
   # @return Boolean

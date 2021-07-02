@@ -2,5 +2,5 @@
 
 <%= render 'form', expense: @expense %>
 
-<%= link_to 'Show', @expense %> |
-<%= link_to 'Back', expenses_path %>
+<%= link_to 'Show', expense_path(@expense, group_id: @group.try(:id)) %> |
+<%= link_to 'Back', back_to_expenses_or_group_path(@group) %>

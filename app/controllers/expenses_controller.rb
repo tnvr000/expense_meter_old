@@ -4,27 +4,32 @@ class ExpensesController < ApplicationController
 
   # GET /expenses
   # GET /expenses.json
+  # before_action [authenticate_customer!]
   def index
     @expenses = current_customer.expenses.includes(:customer)
   end
 
   # GET /expenses/1
   # GET /expenses/1.json
+  # before_action [authenticate_customer!, set_expense]
   def show
   end
 
   # GET /expenses/new
+  # before_action [authenticate_customer!]
   def new
     @expense = Expense.new
   end
 
   # GET /expenses/1/edit
+  # before_action [authenticate_customer!, set_expense]
   def edit
     
   end
 
   # POST /expenses
   # POST /expenses.json
+  # before_action [authenticate_customer!]
   def create
     @expense = current_customer.expenses.build(expense_params)
 
@@ -41,10 +46,11 @@ class ExpensesController < ApplicationController
 
   # PATCH/PUT /expenses/1
   # PATCH/PUT /expenses/1.json
+  # before_action [authenticate_customer!, set_expense]
   def update
     respond_to do |format|
       if @expense.update(expense_params)
-        format.html { redirect_to @expense, notice: 'Expense was successfully updated.' }
+        format.html { redirect_to expense_path(@expense, group_id: @group.try(:id)), notice: 'Expense was successfully updated.' }
         format.json { render :show, status: :ok, location: @expense }
       else
         format.html { render :edit }
@@ -55,10 +61,11 @@ class ExpensesController < ApplicationController
 
   # DELETE /expenses/1
   # DELETE /expenses/1.json
+  # before_action [authenticate_customer!, set_expense]
   def destroy
     @expense.destroy
     respond_to do |format|
-      format.html { redirect_to expenses_url, notice: 'Expense was successfully destroyed.' }
+      format.html { redirect_to show_expenses_or_group_url(@group), notice: 'Expense was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -85,5 +92,10 @@ class ExpensesController < ApplicationController
   # All the members of group of which the expense belongs to is authorized
   def authorized_customer?
     params[:group_id].present? && Membership.exists?(group_id: params[:group_id], customer_id: current_customer.id)
+  end
+
+  # checks if control should go back to show group page or index expense page
+  def show_expenses_or_group_url group
+    group.present? ? group_url(group) : expenses_url
   end
 end
