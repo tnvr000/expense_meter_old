@@ -58,7 +58,7 @@
                 <% if group_admin?(member, @group) %>
                   <%= form_tag(demote_to_member_group_path(@group), method: :post) do  %>
                     <%= hidden_field_tag(:member_id, member.id) %>
-                    <%= submit_tag('Demote To Member') %>
+                    <%= submit_tag(revoke_adminship_button_name(member)) %>
                   <% end %>
                 <% else %>
                   <%= form_tag(promote_to_admin_group_path(@group), method: :post) do  %>
@@ -68,6 +68,13 @@
                 <% end %>
               </td>
               <td>
+                <%= form_tag(remove_member_group_path(@group), method: :post) do %>
+                  <%= hidden_field_tag(:member_id, member.id) %>
+                  <%= submit_tag(remove_member_button_name(member)) %>
+                <% end %>
+              </td>
+            <% elsif member.id == current_customer.id %>
+              <td colspan="2">
                 <%= form_tag(remove_member_group_path(@group), method: :post) do %>
                   <%= hidden_field_tag(:member_id, member.id) %>
                   <%= submit_tag(remove_member_button_name(member)) %>
@@ -88,4 +95,4 @@
 
 <%= link_to 'Edit', edit_group_path(@group) %> |
 <%= link_to 'Back', groups_path %> |
-<%= link_to 'Add Member', add_member_group_path(@group) %>
+<%= link_to 'Add Member', add_member_group_path(@group) if @group.member_an_admin?(current_customer) %>
