@@ -36,8 +36,7 @@ class GroupsController < ApplicationController
   # GET /groups/:id/edit
   # @param id[String]
   # before_action: authenticate_customer! set_group([:created_by, :admin]) authorize_membership!
-  def edit
-  end
+  def edit; end
 
   # POST /groups
   # POST /groups.json
@@ -48,11 +47,11 @@ class GroupsController < ApplicationController
 
     respond_to do |format|
       if @group.save
-        format.html { redirect_to @group, notice: 'Group was successfully created.' }
-        format.json { render :show, status: :created, location: @group }
+        format.html { redirect_to(@group, notice: 'Group was successfully created.') }
+        format.json { render(:show, status: :created, location: @group) }
       else
-        format.html { render :new }
-        format.json { render json: @group.errors, status: :unprocessable_entity }
+        format.html { render(:new) }
+        format.json { render(json: @group.errors, status: :unprocessable_entity) }
       end
     end
   end
@@ -69,7 +68,7 @@ class GroupsController < ApplicationController
     else
       flash[:alert] = t('groups.not_a_member')
     end
-    redirect_to group_path(@group)
+    redirect_to(group_path(@group))
   end
 
   # POST /groups/:id/demote_to_member
@@ -83,7 +82,7 @@ class GroupsController < ApplicationController
     else
       flash[:alert] = t('groups.last_admin')
     end
-    redirect_to group_path(@group)
+    redirect_to(group_path(@group))
   end
 
   # GET /groups/:id/add_member
@@ -145,11 +144,11 @@ class GroupsController < ApplicationController
   def update
     respond_to do |format|
       if @group.update(group_params)
-        format.html { redirect_to @group, notice: 'Group was successfully updated.' }
-        format.json { render :show, status: :ok, location: @group }
+        format.html { redirect_to(@group, notice: 'Group was successfully updated.') }
+        format.json { render(:show, status: :ok, location: @group) }
       else
-        format.html { render :edit }
-        format.json { render json: @group.errors, status: :unprocessable_entity }
+        format.html { render(:edit) }
+        format.json { render(json: @group.errors, status: :unprocessable_entity) }
       end
     end
   end
@@ -161,8 +160,8 @@ class GroupsController < ApplicationController
   def destroy
     @group.destroy
     respond_to do |format|
-      format.html { redirect_to groups_url, notice: 'Group was successfully destroyed.' }
-      format.json { head :no_content }
+      format.html { redirect_to(groups_url, notice: 'Group was successfully destroyed.') }
+      format.json { head(:no_content) }
     end
   end
 
@@ -171,17 +170,17 @@ class GroupsController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
 
   # set group instance variable from list of groups of current_customer
-  def set_group include_associations
+  def set_group(include_associations)
     @group = current_customer.groups.includes(include_associations).find_by(id: params[:id])
   end
 
   # set member instance variable
-  def set_member args
+  def set_member(args)
     @member = Customer.find_by(args)
   end
 
   # set admin instance variable
-  def set_admin args
+  def set_admin(args)
     @admin = Customer.find_by(args)
   end
 
@@ -189,12 +188,12 @@ class GroupsController < ApplicationController
   # group is retrived from list of groups the customer is member of.
   # If the @group is blank, it means the customer is not a member of this group
   def authorize_membership!
-    redirect_to root_path, alert: 'Group not found.' if @group.blank?
+    redirect_to(root_path, alert: 'Group not found.') if @group.blank?
   end
 
   # checks if the current customer is an admin of the group
   def authorize_adminship!
-    redirect_to group_path(@group), alert: 'Not authorized' unless @group.member_an_admin?(current_customer)
+    redirect_to(group_path(@group), alert: 'Not authorized') unless @group.member_an_admin?(current_customer)
   end
 
   # Only allow a list of trusted parameters through.
@@ -205,7 +204,7 @@ class GroupsController < ApplicationController
   # make the given member an admin of the given group
   # @param member [Customer]
   # @param group [Group]
-  def make_member_an_admin member, group
+  def make_member_an_admin(member, group)
     if group.make_member_an_admin(member)
       flash[:notice] = t('groups.promoted_to_admin')
     else
@@ -216,7 +215,7 @@ class GroupsController < ApplicationController
   # make the given admin a member of the given group
   # @param admin [Customer]
   # @param group [Group]
-  def make_admin_a_member admin, group
+  def make_admin_a_member(admin, group)
     if group.make_admin_a_member(admin)
       flash[:notice] = t('groups.demoted_to_member')
     else
@@ -227,7 +226,7 @@ class GroupsController < ApplicationController
   # checks if the given member is currently signed in customer
   # @param member [Customer]
   # @return Boolean
-  def member_current_customer? member
+  def member_current_customer?(member)
     member.id == current_customer.id
   end
 
@@ -235,7 +234,7 @@ class GroupsController < ApplicationController
   # @param group [Group]
   # @param member [Customer]
   # @return Boolean
-  def member_removable? group, member
+  def member_removable?(group, member)
     status = false
     if member.blank?
       flash[:alert] = 'Member does not exists.'
@@ -252,12 +251,12 @@ class GroupsController < ApplicationController
   end
 
   # confirm member removability of member or redirect
-  def authorize_member_removal! group, member
+  def authorize_member_removal!(group, member)
     redirect_to(group_path(group)) unless member_removable?(group, member)
   end
 
   # comfirm member addition of given member in given number
-  def authorize_member_addition! group, member
+  def authorize_member_addition!(group, member)
     redirect_to(add_member_group_path(group), alert: 'Customer does not exists') and return if member.blank?
 
     redirect_to(group_path(group), alert: 'Already a member') if group.member_of_group?(member)
