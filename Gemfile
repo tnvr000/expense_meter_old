@@ -21,9 +21,9 @@ gem 'jbuilder', '~> 2.7'
 # gem 'redis', '~> 4.0'
 # Use Active Model has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
-gem 'devise'
+gem 'devise', '~> 4.7.3'
 
-gem 'nested_form'
+gem 'nested_form', '~> 0.3.2'
 
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
@@ -50,6 +50,7 @@ group :development do
   gem 'solargraph'
 
   gem 'rubycritic'
+  gem 'rails-erd'
 end
 
 group :test do
