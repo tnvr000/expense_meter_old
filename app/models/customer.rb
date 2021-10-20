@@ -10,4 +10,5 @@ class Customer < ApplicationRecord
   has_many :groups, through: :memberships
   has_many :ownerships
   has_many :owner_of_groups, through: :ownerships, source: :group
+  has_many :tags
 end

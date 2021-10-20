@@ -5,4 +5,11 @@ module ExpensesHelper
   def back_to_expenses_or_group_path(group)
     group.present? ? group_path(group) : expenses_path
   end
+
+  # prints tags belonging to given expense
+  # @param expense [Expense]
+  # @return nil
+  def print_tags(expense)
+    expense.tags.map(&:name).join(', ')
+  end
 end

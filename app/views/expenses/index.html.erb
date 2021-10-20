@@ -8,6 +8,7 @@
       <th>Customer</th>
       <th>Title</th>
       <th>Amount</th>
+      <th>Tags</th>
       <th>Description</th>
       <th colspan="3"></th>
     </tr>
@@ -19,6 +20,7 @@
         <td><%= expense.customer.email %></td>
         <td><%= expense.title %></td>
         <td><%= expense.amount %></td>
+        <td><%= print_tags(expense) %></td>
         <td><%= expense.description %></td>
         <td><%= link_to 'Show', expense %></td>
         <td><%= link_to 'Edit', edit_expense_path(expense) %></td>

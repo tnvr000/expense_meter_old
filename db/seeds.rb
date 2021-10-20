@@ -26,7 +26,12 @@ group1.admins << customer2
 group2.admins << customer3
 puts 'added admins of groups'
 
-customer1.expenses.create(
+tag1 = Tag.create(name: 'vegitable', customer_id: customer1.id)
+tag2 = Tag.create(name: 'trip', customer_id: customer1.id)
+tag3 = Tag.create(name: 'accomadation', customer_id: customer1.id)
+tag4 = Tag.create(name: 'ration', customer_id: customer1.id)
+
+customer1expenses = customer1.expenses.create(
   [
     {
       title: 'green chilli',
@@ -41,7 +46,7 @@ customer1.expenses.create(
   ]
 )
 
-customer2.expenses.create(
+customer2expenses = customer2.expenses.create(
   [
     {
       title: 'Coriander',
@@ -61,7 +66,7 @@ customer2.expenses.create(
   ]
 )
 
-customer3.expenses.create(
+customer3expenses = customer3.expenses.create(
   [
     {
       title: 'Lemons',
@@ -81,3 +86,14 @@ customer3.expenses.create(
   ]
 )
 puts 'expenses created'
+
+Tagging.create(expense_id: customer1expenses[0].id, tag_id: tag1.id)
+Tagging.create(expense_id: customer1expenses[1].id, tag_id: tag2.id)
+Tagging.create(expense_id: customer2expenses[0].id, tag_id: tag1.id)
+Tagging.create(expense_id: customer2expenses[1].id, tag_id: tag3.id)
+Tagging.create(expense_id: customer3expenses[2].id, tag_id: tag2.id)
+Tagging.create(expense_id: customer3expenses[0].id, tag_id: tag1.id)
+Tagging.create(expense_id: customer3expenses[1].id, tag_id: tag3.id)
+Tagging.create(expense_id: customer3expenses[2].id, tag_id: tag4.id)
+
+puts 'expenses tagged'
