@@ -1,7 +1,7 @@
 class Expense < ApplicationRecord
   belongs_to :customer
   belongs_to :group, optional: true
-  has_many :taggings
+  has_many :taggings, dependent: :destroy
   has_many :tags, through: :taggings
 
   # add given tags to current expense.
