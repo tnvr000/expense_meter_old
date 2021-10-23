@@ -20,5 +20,10 @@
   <%= @expense.description %>
 </p>
 
+<p>
+  <strong>Tags</strong>
+  <%= print_tags(@expense) %>
+</p>
+
 <%= link_to 'Edit', edit_expense_path(@expense, group_id: @group.try(:id)) %> |
 <%= link_to 'Back', back_to_expenses_or_group_path(@group) %>

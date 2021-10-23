@@ -13,18 +13,23 @@ class ExpensesController < ApplicationController
   # GET /expenses/1.json
   # @param id [String]
   # before_action: authenticate_customer! set_expense
-  def show; end
+  def show
+    @tags = @expense.tags
+  end
 
   # GET /expenses/new
   # before_action: authenticate_customer!
   def new
     @expense = Expense.new
+    @tags = current_customer.tags
   end
 
   # GET /expenses/1/edit
   # @param id [String]
   # before_action: authenticate_customer! set_expense
-  def edit; end
+  def edit
+    @tags = current_customer.tags
+  end
 
   # POST /expenses
   # POST /expenses.json
@@ -33,10 +38,12 @@ class ExpensesController < ApplicationController
   # @param description [String]
   # before_action: authenticate_customer!
   def create
+    byebug
     @expense = current_customer.expenses.build(expense_params)
 
     respond_to do |format|
       if @expense.save
+        @expense.add_tags(expense_tags(params[:expense][:tag_ids]))
         format.html { redirect_to(@expense, notice: 'Expense was successfully created.') }
         format.json { render(:show, status: :created, location: @expense) }
       else
@@ -55,6 +62,7 @@ class ExpensesController < ApplicationController
   def update
     respond_to do |format|
       if @expense.update(expense_params)
+        @expense.manage_tags(expense_tags(params[:expense][:tag_ids]))
         format.html { redirect_to(expense_path(@expense, group_id: @group.try(:id)), notice: 'Expense was successfully updated.') }
         format.json { render(:show, status: :ok, location: @expense) }
       else
@@ -85,7 +93,7 @@ class ExpensesController < ApplicationController
         @group = Group.find_by(id: params[:group_id])
         Expense.where(id: params[:id], group_id: params[:group_id]).first
       else
-        current_customer.expenses.includes(:customer).find(params[:id])
+        current_customer.expenses.includes(:customer, :tags).find(params[:id])
       end
   end
 
@@ -104,5 +112,12 @@ class ExpensesController < ApplicationController
   # @param group [Group]
   def show_expenses_or_group_url(group)
     group.present? ? group_url(group) : expenses_url
+  end
+
+  # retrive tags of given ids from along the current_customer tags
+  # @param tag_ids [Array]
+  # return tags
+  def expense_tags(tag_ids)
+    current_customer.tags.where(id: tag_ids)
   end
 end

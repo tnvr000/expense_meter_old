@@ -28,6 +28,19 @@
     <%= form.text_field :description %>
   </div>
 
+  <div class="field">
+    <fieldset>
+      <legend>Tags</legend>
+      <% @tags.each do |tag| %>
+        <label for="<%= tag_checkbox_id(tag) %>">
+          <%#= form.check_box(:tags, { id: tag_checkbox_id(tag), name: "expense[tags][]"}, tag.id, nil) %>
+          <%= form.check_box(:tag_ids, { id: tag_checkbox_id(tag), multiple: true}, tag.id, nil) %>
+          <span><%= tag.name %></span>
+        </label>
+      <% end %>
+    </fieldset>
+  </div>
+
   <div class="actions">
     <%= form.submit %>
   </div>
