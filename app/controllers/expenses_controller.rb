@@ -6,7 +6,7 @@ class ExpensesController < ApplicationController
   # GET /expenses.json
   # before_action: authenticate_customer!
   def index
-    @expenses = current_customer.expenses.includes(:customer, :tags)
+    @expenses = current_customer.expenses.includes(:customer, :tags, category: :primary_category)
   end
 
   # GET /expenses/1

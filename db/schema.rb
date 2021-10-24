@@ -12,6 +12,14 @@
 
 ActiveRecord::Schema.define(version: 2021_10_20_122159) do
 
+  create_table "categories", charset: "utf8mb4", force: :cascade do |t|
+    t.bigint "primary_category_id", null: false
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["primary_category_id"], name: "index_categories_on_primary_category_id"
+  end
+
   create_table "customers", charset: "utf8mb4", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -27,11 +35,13 @@ ActiveRecord::Schema.define(version: 2021_10_20_122159) do
   create_table "expenses", charset: "utf8mb4", force: :cascade do |t|
     t.bigint "customer_id", null: false
     t.bigint "group_id"
+    t.bigint "category_id", null: false
     t.string "title"
     t.float "amount"
     t.string "description"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["category_id"], name: "index_expenses_on_category_id"
     t.index ["customer_id"], name: "index_expenses_on_customer_id"
     t.index ["group_id"], name: "index_expenses_on_group_id"
   end
@@ -62,6 +72,12 @@ ActiveRecord::Schema.define(version: 2021_10_20_122159) do
     t.index ["group_id"], name: "index_ownerships_on_group_id"
   end
 
+  create_table "primary_categories", charset: "utf8mb4", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "taggings", charset: "utf8mb4", force: :cascade do |t|
     t.bigint "expense_id", null: false
     t.bigint "tag_id", null: false
@@ -79,6 +95,8 @@ ActiveRecord::Schema.define(version: 2021_10_20_122159) do
     t.index ["customer_id"], name: "index_tags_on_customer_id"
   end
 
+  add_foreign_key "categories", "primary_categories"
+  add_foreign_key "expenses", "categories"
   add_foreign_key "expenses", "customers"
   add_foreign_key "expenses", "groups"
   add_foreign_key "memberships", "customers"

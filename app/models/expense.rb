@@ -1,6 +1,7 @@
 class Expense < ApplicationRecord
   belongs_to :customer
   belongs_to :group, optional: true
+  belongs_to :category
   has_many :taggings, dependent: :destroy
   has_many :tags, through: :taggings
 
@@ -36,5 +37,15 @@ class Expense < ApplicationRecord
     end
     add_tags(tags_to_be_added)
     delete_tags(tags_to_be_deleted)
+  end
+
+  # return primary category of current expense
+  # @return primary_category [PrimaryCategory]
+  def primary_category
+    category.primary_category
+  end
+
+  def category_description
+    "#{primary_category.name}/#{category.name}"
   end
 end
