@@ -22,6 +22,7 @@ class ExpensesController < ApplicationController
   def new
     @expense = Expense.new
     @tags = current_customer.tags
+    @primary_category = PrimaryCategory.pluck(:name, :id)
   end
 
   # GET /expenses/1/edit
@@ -99,7 +100,7 @@ class ExpensesController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def expense_params
-    params.require(:expense).permit(:title, :amount, :description)
+    params.require(:expense).permit(:title, :amount, :description, :category_id)
   end
 
   # checks if expense is accessed via a group and if it has authorisation to access the expense

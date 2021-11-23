@@ -14,4 +14,10 @@ Rails.application.routes.draw do
       post :accept_invitation
     end
   end
+
+  resources :primary_categories do
+    member do
+      get :categories
+    end
+  end
 end

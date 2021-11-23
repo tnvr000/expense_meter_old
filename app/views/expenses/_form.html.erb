@@ -29,11 +29,20 @@
   </div>
 
   <div class="field">
+    <%= form.label :primary_category %>
+    <%= form.select(:primary_category, options_for_select(@primary_category), {include_blank: '--- Select Primary Category ---'}) %>
+  </div>
+
+  <div class="field" id="category_container" style="display: none">
+    <%= form.label :category %>
+    <%= form.select :category_id, options_for_select({}) %>
+  </div>
+
+  <div class="field">
     <fieldset>
       <legend>Tags</legend>
       <% @tags.each do |tag| %>
         <label for="<%= tag_checkbox_id(tag) %>">
-          <%#= form.check_box(:tags, { id: tag_checkbox_id(tag), name: "expense[tags][]"}, tag.id, nil) %>
           <%= form.check_box(:tag_ids, { id: tag_checkbox_id(tag), multiple: true}, tag.id, nil) %>
           <span><%= tag.name %></span>
         </label>

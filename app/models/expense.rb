@@ -42,7 +42,7 @@ class Expense < ApplicationRecord
   # return primary category of current expense
   # @return primary_category [PrimaryCategory]
   def primary_category
-    category.primary_category
+    category.primary_category if category.present?
   end
 
   def category_description
