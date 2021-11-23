@@ -22,7 +22,7 @@ class ExpensesController < ApplicationController
   def new
     @expense = Expense.new
     @tags = current_customer.tags
-    @primary_category = PrimaryCategory.pluck(:name, :id)
+    @primary_categories = PrimaryCategory.pluck(:name, :id)
   end
 
   # GET /expenses/1/edit
@@ -30,6 +30,7 @@ class ExpensesController < ApplicationController
   # before_action: authenticate_customer! set_expense
   def edit
     @tags = current_customer.tags
+    @primary_categories = PrimaryCategory.pluck(:name, :id)
   end
 
   # POST /expenses
@@ -94,7 +95,7 @@ class ExpensesController < ApplicationController
         @group = Group.find_by(id: params[:group_id])
         Expense.where(id: params[:id], group_id: params[:group_id]).first
       else
-        current_customer.expenses.includes(:customer, :tags).find(params[:id])
+        current_customer.expenses.includes(:customer, :tags, category: :primary_category).find(params[:id])
       end
   end
 

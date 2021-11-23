@@ -19,4 +19,15 @@ module ExpensesHelper
   def tag_checkbox_id(tag)
     "expense_tag_#{tag.id}"
   end
+
+  # returns options for stimulus category controller
+  # @param expense [Expense]
+  # @return ananomous [Hash]
+  def stimulus_category_controller_options expense
+    {
+      'data-controller' => 'category',
+      'data-category-selected-primary-category-value' => expense.try(:category).try(:primary_category).try(:id),
+      'data-category-selected-category-value' => expense.try(:category).try(:id)
+    }
+  end
 end

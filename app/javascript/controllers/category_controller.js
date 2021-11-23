@@ -11,10 +11,14 @@ import { Controller } from "stimulus"
 
 export default class extends Controller {
   static targets = ['primaryCategory', 'category']
+  static values = { 
+    selectedPrimaryCategory: {type: Number, default: 0}, 
+    selectedCategory: {type: Number, default: 0}
+  }
   connect() {
+    this.selectPrimaryCategory();
     let primaryCategoryId = this.primaryCategoryTarget.selectedOptions[0].value || 0;
     this.populateCategory(primaryCategoryId)
-    console.log(this.primaryCategoryTarget);
   }
 
   changed() {
@@ -32,6 +36,7 @@ export default class extends Controller {
         this.enableCategoryDropdown();
         this.categoryTarget.innerHTML = '';
         optionData.forEach(optionDatum => (this.createAndAppendOption(optionDatum)));
+        this.selectCatgory();
       });
     });
   }
@@ -58,5 +63,17 @@ export default class extends Controller {
     let categoryDropdownContainer = document.getElementById('category_container');
     categoryDropdownContainer.style.display = 'block';
     this.categoryTarget.disabled = false;
+  }
+
+  selectPrimaryCategory() {
+    if(this.selectedPrimaryCategoryValue != 0) {
+      this.primaryCategoryTarget.value = this.selectedPrimaryCategoryValue;
+    }
+  }
+
+  selectCatgory() {
+    if(this.selectedCategoryValue != 0) {
+      this.categoryTarget.value = this.selectedCategoryValue;
+    }
   }
 }

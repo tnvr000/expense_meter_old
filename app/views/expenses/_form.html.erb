@@ -28,17 +28,17 @@
     <%= form.text_field :description %>
   </div> <!-- description container -->
 
-  <div data-controller="category">
+  <%= content_tag(:div, stimulus_category_controller_options(@expense)) do %>
     <div class="field">
       <%= form.label :primary_category %>
-      <%= form.select(:primary_category, options_for_select(@primary_category), {include_blank: '--- Select Primary Category ---'}, 'data-action' => 'category#changed', 'data-category-target' => 'primaryCategory') %>
+      <%= form.select(:primary_category, options_for_select(@primary_categories), {include_blank: '--- Select Primary Category ---'}, 'data-action' => 'category#changed', 'data-category-target' => 'primaryCategory') %>
     </div> <!-- primary category container -->
 
     <div class="field" id="category_container" style="display: none">
       <%= form.label :category %>
       <%= form.select(:category_id, options_for_select({}), {}, 'data-category-target' => 'category') %>
     </div> <!-- category container -->
-  </div> <!-- category and primary category container -->
+  <% end %> <!-- category and primary category container -->
 
   <div class="field">
     <fieldset>
