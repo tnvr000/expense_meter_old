@@ -37,11 +37,11 @@ class ExpensesController < ApplicationController
   # @param title [String]
   # @param amount [String]
   # @param description [String]
+  # @param category [Integer]
+  # @param tags [Array<Integer>]
   # before_action: authenticate_customer!
   def create
-    byebug
     @expense = current_customer.expenses.build(expense_params)
-
     respond_to do |format|
       if @expense.save
         @expense.add_tags(expense_tags(params[:expense][:tag_ids]))
