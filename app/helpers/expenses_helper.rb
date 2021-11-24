@@ -27,7 +27,8 @@ module ExpensesHelper
     {
       'data-controller' => 'category',
       'data-category-selected-primary-category-value' => expense.try(:category).try(:primary_category).try(:id),
-      'data-category-selected-category-value' => expense.try(:category).try(:id)
+      'data-category-selected-category-value' => expense.try(:category).try(:id),
+      'data-category-selected-options-value' => '0'
     }
   end
 end

@@ -13,25 +13,25 @@ export default class extends Controller {
   static targets = ['primaryCategory', 'category']
   static values = { 
     selectedPrimaryCategory: {type: Number, default: 0}, 
-    selectedCategory: {type: Number, default: 0}
+    selectedCategory: {type: Number, default: 0},
   }
+
   connect() {
     this.selectPrimaryCategory();
-    let primaryCategoryId = this.primaryCategoryTarget.selectedOptions[0].value || 0;
-    this.populateCategory(primaryCategoryId)
+    this.populateCategory(this.selectedPrimaryCategoryValue);
   }
 
   changed() {
-    let primaryCategoryId = this.primaryCategoryTarget.selectedOptions[0].value || 0;
-    this.populateCategory(primaryCategoryId)
+    this.selectedPrimaryCategoryValue = this.primaryCategoryTarget.selectedOptions[0].value || 0;
+    this.populateCategory();
   }
 
-  populateCategory(primaryCategoryId) {
-    if(primaryCategoryId <= 0) {
+  populateCategory() {
+    if(this.selectedPrimaryCategoryValue <= 0) {
       this.disableCategoryDropdown();
       return;
     }
-    fetch(this.url(primaryCategoryId)).then((response) => {
+    fetch(this.url(this.selectedPrimaryCategoryValue)).then((response) => {
       response.json().then((optionData) => {
         this.enableCategoryDropdown();
         this.categoryTarget.innerHTML = '';
@@ -45,7 +45,7 @@ export default class extends Controller {
     let option = document.createElement('option');
     option.innerHTML = optionDatum.name;
     option.value = optionDatum.id;
-    this.categoryTarget.appendChild(option)
+    this.categoryTarget.appendChild(option);
   }
 
   url(id) {
@@ -55,7 +55,7 @@ export default class extends Controller {
   disableCategoryDropdown() {
     let categoryDropdownContainer = document.getElementById('category_container');
     categoryDropdownContainer.style.display = 'none';
-    this.categoryTarget.innerHTML = ''
+    this.categoryTarget.innerHTML = '';
     this.categoryTarget.disabled = true;
   }
 
@@ -74,6 +74,7 @@ export default class extends Controller {
   selectCatgory() {
     if(this.selectedCategoryValue != 0) {
       this.categoryTarget.value = this.selectedCategoryValue;
+      this.selectedCategoryValue = 0;
     }
   }
 }
