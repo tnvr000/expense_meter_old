@@ -43,8 +43,8 @@ export default class extends Controller {
 
   createAndAppendOption(optionDatum) {
     let option = document.createElement('option');
-    option.innerHTML = optionDatum[0];
-    option.value = optionDatum[1];
+    option.innerHTML = optionDatum.name;
+    option.value = optionDatum.id;
     this.categoryTarget.appendChild(option)
   }
 
