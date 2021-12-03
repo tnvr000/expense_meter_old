@@ -1,1 +1,6 @@
-<header><h1>Expense Meter</h1></header>
+<header>
+  <h1>Expense Meter</h1>
+  <% if customer_signed_in? %>
+    <h4><%= current_customer.email %></h4>
+  <% end %>
+</header>

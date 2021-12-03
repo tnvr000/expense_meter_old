@@ -1,0 +1,15 @@
+<% if @tags.present? %>
+  <table>
+    <tr>
+      <th>Name</th>
+      <th colspam="2">Actions</th>
+    </tr>
+    <% @tags.each do |tag| %>
+      <tr>
+        <td><%= tag.name %></td>
+        <td><%= link_to 'Edit', edit_tag_path(tag) %></td>
+        <td><%= link_to 'Delete', tag_path(tag), method: :delete, data: {confirm: 'Are you sure?'} %></td>
+      </tr>
+    <% end %>
+  </table>
+<% end %>

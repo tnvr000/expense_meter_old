@@ -18,7 +18,7 @@ export default class extends Controller {
 
   connect() {
     this.selectPrimaryCategory();
-    this.populateCategory(this.selectedPrimaryCategoryValue);
+    this.populateCategory();
   }
 
   changed() {
