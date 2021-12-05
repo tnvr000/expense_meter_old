@@ -52,6 +52,17 @@ class TagsController < ApplicationController
     end
   end
 
+  # DELETE /tags/:id
+  # @param id [String]
+  # before_action: authenticate_customer!
+  def destroy
+    @tag = current_customer.tags.find_by id: params[:id]
+    @tag.destroy
+    respond_to do |format|
+      format.html { redirect_to tags_url, notice: 'Tag was successfully destroyed' }
+    end
+  end
+
   private
 
   # only allow a list of trusted parameters through.
