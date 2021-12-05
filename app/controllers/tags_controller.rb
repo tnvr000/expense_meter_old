@@ -20,13 +20,34 @@ class TagsController < ApplicationController
   # @param name [String]
   # before_action: authenticate_customer!
   def create
-    byebug
     @tag = current_customer.tags.build(tag_params)
     respond_to do |format|
       if @tag.save
         format.html { redirect_to tags_url, notice: 'Tag was successfully created' }
       else
         format.html { render :new }
+      end
+    end
+  end
+
+  # GET /tags/:id/edit
+  # @param id [String]
+  # before_action: authenticate_customer!
+  def edit
+    @tag = current_customer.tags.find_by id: params[:id]
+  end
+
+  # PATCH /tags/:id
+  # PUT /tags/:id
+  # @param name [String]
+  # before_action: authenticate_customer!
+  def update
+    @tag = current_customer.tags.find_by id: params[:id]
+    respond_to do |format|
+      if @tag.update tag_params
+        format.html { redirect_to tags_path, notice: 'Tag was successfully' }
+      else
+        format.html { render :edit }
       end
     end
   end
