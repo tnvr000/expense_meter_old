@@ -38,3 +38,11 @@ en:
     not_promoted_to_admin: 'Member could not be promoted to admin.'
     demoted_to_member: 'Admin demoted to member.'
     not_demoted_to_member: 'Admin could not be demoted to member.'
+  expenses:
+    created: 'Expense was successfully created.'
+    updated: 'Expense was successfully updated.'
+    deleted: 'Expense was successfully destroyed.'
+  tags:
+    created: 'Tag was successfully created.'
+    updated: 'Tag was successfully updated.'
+    deleted: 'Tag was successfully destroyed.'

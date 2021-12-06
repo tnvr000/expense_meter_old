@@ -46,7 +46,7 @@ class ExpensesController < ApplicationController
     respond_to do |format|
       if @expense.save
         @expense.add_tags(expense_tags(params[:expense][:tag_ids]))
-        format.html { redirect_to(@expense, notice: 'Expense was successfully created.') }
+        format.html { redirect_to(@expense, notice: t('expenses.created')) }
         format.json { render(:show, status: :created, location: @expense) }
       else
         format.html { render(:new) }
@@ -65,7 +65,7 @@ class ExpensesController < ApplicationController
     respond_to do |format|
       if @expense.update(expense_params)
         @expense.manage_tags(expense_tags(params[:expense][:tag_ids]))
-        format.html { redirect_to(expense_path(@expense, group_id: @group.try(:id)), notice: 'Expense was successfully updated.') }
+        format.html { redirect_to(expense_path(@expense, group_id: @group.try(:id)), notice: t('expenses.updated')) }
         format.json { render(:show, status: :ok, location: @expense) }
       else
         format.html { render(:edit) }
@@ -81,7 +81,7 @@ class ExpensesController < ApplicationController
   def destroy
     @expense.destroy
     respond_to do |format|
-      format.html { redirect_to(show_expenses_or_group_url(@group), notice: 'Expense was successfully destroyed.') }
+      format.html { redirect_to(show_expenses_or_group_url(@group), notice: t('expenses.deleted')) }
       format.json { head(:no_content) }
     end
   end

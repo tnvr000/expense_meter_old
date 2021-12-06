@@ -23,7 +23,7 @@ class TagsController < ApplicationController
     @tag = current_customer.tags.build(tag_params)
     respond_to do |format|
       if @tag.save
-        format.html { redirect_to tags_url, notice: 'Tag was successfully created' }
+        format.html { redirect_to tags_url, notice: t('tags.created') }
       else
         format.html { render :new }
       end
@@ -45,7 +45,7 @@ class TagsController < ApplicationController
     @tag = current_customer.tags.find_by id: params[:id]
     respond_to do |format|
       if @tag.update tag_params
-        format.html { redirect_to tags_path, notice: 'Tag was successfully' }
+        format.html { redirect_to tags_path, notice: t('tags.updated') }
       else
         format.html { render :edit }
       end
@@ -59,7 +59,7 @@ class TagsController < ApplicationController
     @tag = current_customer.tags.find_by id: params[:id]
     @tag.destroy
     respond_to do |format|
-      format.html { redirect_to tags_url, notice: 'Tag was successfully destroyed' }
+      format.html { redirect_to tags_url, notice: t('tags.deleted') }
     end
   end
 
