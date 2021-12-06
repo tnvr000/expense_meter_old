@@ -43,6 +43,7 @@ class ExpensesController < ApplicationController
   # before_action: authenticate_customer!
   def create
     @expense = current_customer.expenses.build(expense_params)
+    set_date
     respond_to do |format|
       if @expense.save
         @expense.add_tags(expense_tags(params[:expense][:tag_ids]))
@@ -62,8 +63,10 @@ class ExpensesController < ApplicationController
   # @param description [String]
   # before_action: authenticate_customer! set_expense
   def update
+    @expense.assign_attributes(expense_params)
+    set_date
     respond_to do |format|
-      if @expense.update(expense_params)
+      if @expense.save
         @expense.manage_tags(expense_tags(params[:expense][:tag_ids]))
         format.html { redirect_to(expense_path(@expense, group_id: @group.try(:id)), notice: t('expenses.updated')) }
         format.json { render(:show, status: :ok, location: @expense) }
@@ -121,5 +124,12 @@ class ExpensesController < ApplicationController
   # return tags
   def expense_tags(tag_ids)
     current_customer.tags.where(id: tag_ids)
+  end
+
+  def set_date
+    return if params[:expense][:date].blank?
+
+    date_part = params[:expense][:date].split('-').map(&:to_i)
+    @expense.date = Date.new(date_part[0], date_part[1], date_part[2])
   end
 end

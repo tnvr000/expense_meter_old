@@ -36,6 +36,7 @@ ActiveRecord::Schema.define(version: 2021_10_20_122159) do
     t.bigint "customer_id", null: false
     t.bigint "group_id"
     t.bigint "category_id", null: false
+    t.date "date"
     t.string "title"
     t.float "amount"
     t.string "description"

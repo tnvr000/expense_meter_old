@@ -12,7 +12,12 @@
   <% end %>
 
   <%= form.hidden_field(:group_id, value: @group.id, name: :group_id)  if @group.present? %>
-  
+
+  <div class="field">
+    <%= form.label :Date %>
+    <%= form.date_field :date %>
+  </div> <!-- date container -->
+
   <div class="field">
     <%= form.label :title %>
     <%= form.text_field :title %>

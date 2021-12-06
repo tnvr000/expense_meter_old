@@ -175,11 +175,13 @@ rent_category = Category.find_by(name: 'Rent')
 customer1expenses = customer1.expenses.create(
   [
     {
+      date: Date.new(2019, 10, 2),
       title: 'green chilli',
       amount: 15.0,
       description: 'quater KG',
       category_id: groceries_category.id
     }, {
+      date: Date.new(2019, 7, 13),
       group_id: group1.id,
       title: 'Transportation',
       amount: 5000.0,
@@ -192,17 +194,20 @@ customer1expenses = customer1.expenses.create(
 customer2expenses = customer2.expenses.create(
   [
     {
+      date: Date.new(2019, 9, 23),
       title: 'Coriander',
       amount: 5.0,
       description: '1 Bundle',
       category_id: groceries_category.id
     }, {
+      date: Date.new(2019, 11, 10),
       group_id: group1.id,
       title: 'Resort',
       amount: 5000.0,
       description: 'AC Tent',
       category_id: rent_category.id
     }, {
+      date: Date.new(2019, 11, 10),
       group_id: group2.id,
       title: 'Transportation',
       amount: 5000.0,
@@ -215,17 +220,20 @@ customer2expenses = customer2.expenses.create(
 customer3expenses = customer3.expenses.create(
   [
     {
+      date: Date.new(2019, 9, 4),
       title: 'Lemons',
       amount: 20.0,
       description: '4 Piece',
       category_id: groceries_category.id
     }, {
+      date: Date.new(2019, 7, 13),
       group_id: group2.id,
       title: 'Resort',
       amount: 5000.0,
       description: 'AC Tent',
       category_id: rent_category.id
     }, {
+      date: Date.new(2019, 9, 8),
       group_id: group1.id,
       title: 'Ration',
       amount: 1000.0,
