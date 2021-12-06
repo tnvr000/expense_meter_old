@@ -147,6 +147,11 @@ customer2 = Customer.create(email: 'tnvr.ah.kh@gmail.com', password: 'password')
 customer3 = Customer.create(email: 'tanveerk@mindfiresolutions.com', password: 'password')
 puts 'customers created'
 
+customer1.create_profile(name: 'Tanveer Khan', contact: '8594976909')
+customer2.create_profile(name: 'Tanveer Ahmad Khan', contact: '9142711416')
+customer3.create_profile(name: 'Tanveer', contact: '9458429452')
+puts 'customer profile updated'
+
 group1 = customer1.my_groups.create(name: 'Belghar Trip')
 group2 = customer3.my_groups.create(name: 'Daringbadi Trip')
 puts 'Groups created'

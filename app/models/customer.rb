@@ -4,6 +4,7 @@ class Customer < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
+  has_one :profile
   has_many :expenses
   has_many :my_groups, class_name: :Group, foreign_key: :customer_email, primary_key: :email
   has_many :memberships
