@@ -6,6 +6,7 @@
   <thead>
     <tr>
       <th>Customer</th>
+      <th>Date</th>
       <th>Title</th>
       <th>Amount</th>
       <th>Category</th>
@@ -19,6 +20,7 @@
     <% @expenses.each do |expense| %>
       <tr>
         <td><%= expense.customer.email %></td>
+        <td><%= expense.date.to_s %></td>
         <td><%= expense.title %></td>
         <td><%= expense.amount %></td>
         <td><%= expense.category_description %></td>
