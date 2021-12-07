@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   resources :expenses
   resources :tags
-  resources :profiles, only: [:index]
+  resource :profile
   resources :groups do
     member do
       post :demote_to_member

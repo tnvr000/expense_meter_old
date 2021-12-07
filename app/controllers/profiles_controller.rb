@@ -6,7 +6,7 @@ class ProfilesController < ApplicationController
 
   # GET /profiles
   # before_action :authenticate_customer!
-  def index
+  def show
     @profile = current_customer.profile
   end
 end
