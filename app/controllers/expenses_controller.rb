@@ -4,7 +4,7 @@ class ExpensesController < ApplicationController
 
   # GET /expenses
   # GET /expenses.json
-  # before_action: authenticate_customer!
+  # before_action :authenticate_customer!
   def index
     @expenses = current_customer.expenses.includes(:customer, :tags, category: :primary_category)
   end
@@ -12,13 +12,13 @@ class ExpensesController < ApplicationController
   # GET /expenses/1
   # GET /expenses/1.json
   # @param id [String]
-  # before_action: authenticate_customer! set_expense
+  # before_action :authenticate_customer! :set_expense
   def show
     @tags = @expense.tags
   end
 
   # GET /expenses/new
-  # before_action: authenticate_customer!
+  # before_action :authenticate_customer!
   def new
     @expense = Expense.new
     @tags = current_customer.tags
@@ -27,7 +27,7 @@ class ExpensesController < ApplicationController
 
   # GET /expenses/1/edit
   # @param id [String]
-  # before_action: authenticate_customer! set_expense
+  # before_action :authenticate_customer! :set_expense
   def edit
     @tags = current_customer.tags
     @primary_categories = PrimaryCategory.pluck(:name, :id)
@@ -40,7 +40,7 @@ class ExpensesController < ApplicationController
   # @param description [String]
   # @param category [Integer]
   # @param tags [Array<Integer>]
-  # before_action: authenticate_customer!
+  # before_action :authenticate_customer!
   def create
     @expense = current_customer.expenses.build(expense_params)
     set_date
@@ -61,7 +61,7 @@ class ExpensesController < ApplicationController
   # @param title [String]
   # @param amount [String]
   # @param description [String]
-  # before_action: authenticate_customer! set_expense
+  # before_action :authenticate_customer! :set_expense
   def update
     @expense.assign_attributes(expense_params)
     set_date
@@ -80,7 +80,7 @@ class ExpensesController < ApplicationController
   # DELETE /expenses/1
   # DELETE /expenses/1.json
   # @param id [String]
-  # before_action: authenticate_customer! set_expense
+  # before_action :authenticate_customer! :set_expense
   def destroy
     @expense.destroy
     respond_to do |format|

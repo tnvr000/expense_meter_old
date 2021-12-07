@@ -5,20 +5,20 @@ class TagsController < ApplicationController
   before_action :authenticate_customer!
 
   # GET /tags
-  # before_action: authenticate_customer!
+  # before_action :authenticate_customer!
   def index
     @tags = Tag.all
   end
 
   # GET /tags/new
-  # before_action: authenticate_customer!
+  # before_action :authenticate_customer!
   def new
     @tag = Tag.new
   end
 
   # POST /tags
   # @param name [String]
-  # before_action: authenticate_customer!
+  # before_action :authenticate_customer!
   def create
     @tag = current_customer.tags.build(tag_params)
     respond_to do |format|
@@ -32,7 +32,7 @@ class TagsController < ApplicationController
 
   # GET /tags/:id/edit
   # @param id [String]
-  # before_action: authenticate_customer!
+  # before_action :authenticate_customer!
   def edit
     @tag = current_customer.tags.find_by id: params[:id]
   end
@@ -40,7 +40,7 @@ class TagsController < ApplicationController
   # PATCH /tags/:id
   # PUT /tags/:id
   # @param name [String]
-  # before_action: authenticate_customer!
+  # before_action :authenticate_customer!
   def update
     @tag = current_customer.tags.find_by id: params[:id]
     respond_to do |format|
@@ -54,7 +54,7 @@ class TagsController < ApplicationController
 
   # DELETE /tags/:id
   # @param id [String]
-  # before_action: authenticate_customer!
+  # before_action :authenticate_customer!
   def destroy
     @tag = current_customer.tags.find_by id: params[:id]
     @tag.destroy

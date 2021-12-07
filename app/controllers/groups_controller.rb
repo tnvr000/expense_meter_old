@@ -14,7 +14,7 @@ class GroupsController < ApplicationController
 
   # GET /groups
   # GET /groups.json
-  # before_action: authenticate_customer!
+  # before_action :authenticate_customer!
   def index
     @groups = current_customer.groups.includes(:created_by)
   end
@@ -22,26 +22,26 @@ class GroupsController < ApplicationController
   # GET /groups/:id
   # GET /groups/:id.json
   # @param id [String]
-  # before_action: authenticate_customer! set_group([:created_by, :admin]) authorize_membership!
+  # before_action :authenticate_customer! :set_group([:created_by, :admin]) :authorize_membership!
   def show
     @expenses = @group.expenses.includes(:customer)
   end
 
   # GET /groups/new
-  # before_action: authenticate_customer!
+  # before_action :authenticate_customer!
   def new
     @group = Group.new
   end
 
   # GET /groups/:id/edit
   # @param id[String]
-  # before_action: authenticate_customer! set_group([:created_by, :admin]) authorize_membership!
+  # before_action :authenticate_customer! :set_group([:created_by, :admin]) :authorize_membership!
   def edit; end
 
   # POST /groups
   # POST /groups.json
   # @param name [String]
-  # before_action: authenticate_customer!
+  # before_action :authenticate_customer!
   def create
     @group = current_customer.groups.build(group_params)
 
@@ -60,8 +60,8 @@ class GroupsController < ApplicationController
   # POST /groups/:id/promote_to_admin.json
   # @param id [String]
   # @param member_id [String]
-  # before_action: authenticate_customer! set_group([:member, :admin]) authorize_membership! authorize_adminship!
-  #   set_member({id: params[:member_id]})
+  # before_action :authenticate_customer! :set_group([:member, :admin]) :authorize_membership!
+  #   :authorize_adminship! :set_member({id: params[:member_id]})
   def promote_to_admin
     if @group.member_of_group?(@member)
       make_member_an_admin(@member, @group)
@@ -75,7 +75,8 @@ class GroupsController < ApplicationController
   # POST /groups/:id/demote_to_member.json
   # @param id [String]
   # @param admin_id [String]
-  # before_action: authenticate_customer! set_group() authorize_membership! set_admin({id: params[:member_id]})
+  # before_action :authenticate_customer! :set_group() :authorize_membership!
+  #   :set_admin({id: params[:member_id]})
   def demote_to_member
     if @group.multiple_admins?
       make_admin_a_member(@admin, @group)
@@ -87,7 +88,7 @@ class GroupsController < ApplicationController
 
   # GET /groups/:id/add_member
   # @param id [String]
-  # before_action: authenticate_customer! set_group([:admins]) authorize_membership! authorize_adminship!
+  # before_action :authenticate_customer! :set_group([:admins]) :authorize_membership! :authorize_adminship!
   def add_member
     @group.generate_token if @group.token.blank?
   end
@@ -95,7 +96,7 @@ class GroupsController < ApplicationController
   # POST /groups/:id/remove_member
   # @param id [String]
   # @param member_id [String]
-  # before_action: authenticate_customer! set_group() authorize_membership! set_member({id: params[:member_id]})
+  # before_action :authenticate_customer! :set_group() :authorize_membership! :set_member({id: params[:member_id]})
   #   authorize_member_removal!(@group, @member)
   def remove_member
     @group.remove_member(@member)
@@ -105,8 +106,8 @@ class GroupsController < ApplicationController
   # POST /groups/:id/make_member
   # @param id [String]
   # @param email [String]
-  # before_action: authenticate_customer! set_group() authorize_membership! authorize_adminship!
-  #   set_member({email: params[:email]}) authorize_member_addition!(@group, @member)
+  # before_action :authenticate_customer! :set_group() :authorize_membership! :authorize_adminship!
+  #   :set_member({email: params[:email]}) :authorize_member_addition!(@group, @member)
   def make_member
     @group.make_member(@member)
     redirect_to(group_path(@group), notice: 'Member is added')
@@ -115,7 +116,7 @@ class GroupsController < ApplicationController
   # GET /groups/:id/invitation
   # @param id
   # @param token
-  # before_action: authenticate_customer!
+  # before_action :authenticate_customer!
   def invitation
     @group = Group.where('groups.id = ? AND groups.token = ?', params[:id], params[:token]).first
     redirect_to(root_path) and return if @group.blank?
@@ -126,7 +127,7 @@ class GroupsController < ApplicationController
 
   # POST /groups/:id/accept_invitation
   # @param id[String]
-  # before_action: authenticate_customer!
+  # before_action :authenticate_customer!
   def accept_invitation
     @group = Group.find_by(id: params[:id])
     redirect_to(root_path) and return if @group.blank?
@@ -140,7 +141,7 @@ class GroupsController < ApplicationController
   # PATCH/PUT /groups/:id.json
   # @param id
   # @param name
-  # before_action: authenticate_customer! set_group(:created_by, :admins) authorize_membership!
+  # before_action :authenticate_customer! :set_group(:created_by, :admins) :authorize_membership!
   def update
     respond_to do |format|
       if @group.update(group_params)
@@ -156,7 +157,7 @@ class GroupsController < ApplicationController
   # DELETE /groups/:id
   # DELETE /groups/:id.json
   # @param id
-  # before_action: authenticate_customer! set_group(:created_by, :admins) authorize_membership!
+  # before_action :authenticate_customer! :set_group(:created_by, :admins) :authorize_membership!
   def destroy
     @group.destroy
     respond_to do |format|
