@@ -5,6 +5,7 @@ class Customer < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   has_one :profile
+  has_one :account
   has_many :expenses
   has_many :my_groups, class_name: :Group, foreign_key: :customer_email, primary_key: :email
   has_many :memberships
