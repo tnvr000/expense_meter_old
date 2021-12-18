@@ -152,6 +152,16 @@ customer2.create_profile(name: 'Tanveer Ahmad Khan', contact: '9142711416')
 customer3.create_profile(name: 'Tanveer', contact: '9458429452')
 puts 'customer profile updated'
 
+account1 = customer1.create_account(balance: 400)
+account2 = customer2.create_account(balance: 500)
+account3 = customer3.create_account(balance: 600)
+puts 'accounts created'
+
+account1.create_money_in_hand(balance: 400)
+account2.create_money_in_hand(balance: 400)
+account3.create_money_in_hand(balance: 400)
+puts 'money in hands created'
+
 group1 = customer1.my_groups.create(name: 'Belghar Trip')
 group2 = customer3.my_groups.create(name: 'Daringbadi Trip')
 puts 'Groups created'
