@@ -5,7 +5,7 @@ class AccountsController < ApplicationController
 
   # GET /accounts
   # before_action :authenticate_customer
-  def index
+  def show
     @account = current_customer.account
     @cash = @account.cash
   end
