@@ -6,5 +6,20 @@
     <div><%= @cash.balance %></div>
   </div>
 </div>
+<% if @banks.present? %>
+  <div>
+    <h3>Banks</h3>
+    <% @banks.each do |bank| %>
+      <div>
+        <div><strong>Name</strong></div>
+        <div><%= bank.name %></div>
+      </div>
+      <div>
+        <div><strong>Balance</strong></div>
+        <div><%= bank.balance %></div>
+      </div>
+    <% end %>
+  </div>
+<% end %>
 
 <%= link_to 'Home', root_path %>

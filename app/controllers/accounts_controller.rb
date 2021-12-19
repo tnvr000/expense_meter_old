@@ -1,5 +1,6 @@
-# frozen_strinf_literal: true
+# frozen_string_literal: true
 
+# accouts controller
 class AccountsController < ApplicationController
   before_action :authenticate_customer!
 
@@ -8,5 +9,6 @@ class AccountsController < ApplicationController
   def show
     @account = current_customer.account
     @cash = @account.cash
+    @banks = @account.banks
   end
 end
