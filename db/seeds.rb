@@ -157,10 +157,10 @@ account2 = customer2.create_account(balance: 500)
 account3 = customer3.create_account(balance: 600)
 puts 'accounts created'
 
-account1.create_money_in_hand(balance: 400)
-account2.create_money_in_hand(balance: 400)
-account3.create_money_in_hand(balance: 400)
-puts 'money in hands created'
+account1.create_cash(balance: 400)
+account2.create_cash(balance: 500)
+account3.create_cash(balance: 600)
+puts 'cashes created'
 
 group1 = customer1.my_groups.create(name: 'Belghar Trip')
 group2 = customer3.my_groups.create(name: 'Daringbadi Trip')

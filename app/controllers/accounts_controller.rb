@@ -7,6 +7,6 @@ class AccountsController < ApplicationController
   # before_action :authenticate_customer
   def index
     @account = current_customer.account
-    @money_in_hand = @account.money_in_hand
+    @cash = @account.cash
   end
 end
