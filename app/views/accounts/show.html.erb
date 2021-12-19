@@ -1,4 +1,6 @@
 <h2>Accounts</h2>
+<div><strong>Balance</strong></div>
+<div><%= @account.balance %></div>
 <div>
   <h3>Cash</h3>
   <div>
@@ -17,6 +19,21 @@
       <div>
         <div><strong>Balance</strong></div>
         <div><%= bank.balance %></div>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+<% if @ewallets.present? %>
+  <div>
+    <h3>E-Wallets</h3>
+    <% @ewallets.each do |ewallet| %>
+      <div>
+        <div><strong>Name</strong></div>
+        <div><%= ewallet.name %></div>
+      </div>
+      <div>
+        <div><strong>Balance</strong></div>
+        <div><%= ewallet.balance %></div>
       </div>
     <% end %>
   </div>

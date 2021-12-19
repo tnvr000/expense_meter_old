@@ -4,4 +4,5 @@ class Account < ApplicationRecord
   belongs_to :customer
   has_one :cash
   has_many :banks
+  has_many :ewallets
 end

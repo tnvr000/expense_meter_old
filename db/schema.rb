@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_19_075657) do
+ActiveRecord::Schema.define(version: 2021_12_19_101412) do
 
   create_table "accounts", charset: "utf8mb4", force: :cascade do |t|
     t.bigint "customer_id"
@@ -55,6 +55,15 @@ ActiveRecord::Schema.define(version: 2021_12_19_075657) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["email"], name: "index_customers_on_email", unique: true
     t.index ["reset_password_token"], name: "index_customers_on_reset_password_token", unique: true
+  end
+
+  create_table "ewallets", charset: "utf8mb4", force: :cascade do |t|
+    t.bigint "account_id"
+    t.string "name"
+    t.float "balance"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["account_id"], name: "index_ewallets_on_account_id"
   end
 
   create_table "expenses", charset: "utf8mb4", force: :cascade do |t|

@@ -10,5 +10,6 @@ class AccountsController < ApplicationController
     @account = current_customer.account
     @cash = @account.cash
     @banks = @account.banks
+    @ewallets = @account.ewallets
   end
 end
