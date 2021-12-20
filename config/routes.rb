@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   resources :tags
   resource :account
   resource :profile
+  resource :transactions
   resources :groups do
     member do
       post :demote_to_member
