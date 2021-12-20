@@ -5,4 +5,5 @@ class Account < ApplicationRecord
   has_one :cash
   has_many :banks
   has_many :ewallets
+  has_many :transactions
 end

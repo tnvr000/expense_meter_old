@@ -280,3 +280,13 @@ Tagging.create(expense_id: customer3expenses[1].id, tag_id: tag3.id)
 Tagging.create(expense_id: customer3expenses[2].id, tag_id: tag4.id)
 
 puts 'expenses tagged'
+
+account1.transactions.create(amount: 15, balance: 19_000, description: 'expenditure/green chilli/quarter kg')
+account1.transactions.create(amount: 5_000, balance: 14_000, description: 'expenditure/transportation/from bhubaneswar to belghar and back')
+account2.transactions.create(amount: 5, balance: 14_100, description: 'expenditure/coriander/ 1 bundle')
+account2.transactions.create(amount: 5_000, balance: 9_100, description: 'expenditure/resort/AC tent')
+account2.transactions.create(amount: 5_000, balance: 4_100, description: 'expenditure/transportation/from bhubaneswar to daringbadi a nd back')
+account3.transactions.create(amount: 20, balance: 10_100, description: 'expenditure/lemon/4 piece')
+account3.transactions.create(amount: 5_000, balance: 5_100, description: 'expenditure/Resort/AC tent')
+account3.transactions.create(amount: 1_000, balance: 4_100, description: 'expenditure/Ration/ration to cook food')
+puts 'created transactions'

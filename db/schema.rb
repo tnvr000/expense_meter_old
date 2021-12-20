@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_19_101412) do
+ActiveRecord::Schema.define(version: 2021_12_20_053930) do
 
   create_table "accounts", charset: "utf8mb4", force: :cascade do |t|
     t.bigint "customer_id"
@@ -137,6 +137,19 @@ ActiveRecord::Schema.define(version: 2021_12_19_101412) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["customer_id"], name: "index_tags_on_customer_id"
+  end
+
+  create_table "transactions", charset: "utf8mb4", force: :cascade do |t|
+    t.bigint "account_id"
+    t.string "transactionable_type"
+    t.bigint "transactionable_id"
+    t.float "amount"
+    t.float "balance"
+    t.string "description"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["account_id"], name: "index_transactions_on_account_id"
+    t.index ["transactionable_type", "transactionable_id"], name: "index_transactions_on_transactionable"
   end
 
   add_foreign_key "categories", "primary_categories"
