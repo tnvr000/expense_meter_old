@@ -157,20 +157,20 @@ account2 = customer2.create_account(balance: 4_100)
 account3 = customer3.create_account(balance: 3_700)
 puts 'accounts created'
 
-account1.create_cash(balance: 500)
-account2.create_cash(balance: 600)
-account3.create_cash(balance: 700)
+customer1_cash = account1.create_cash(balance: 500)
+customer2_cash = account2.create_cash(balance: 600)
+customer3_cash = account3.create_cash(balance: 700)
 puts 'cashes created'
 
-account1.banks.create(name: 'State Bank of India', balance: 2500)
-account1.banks.create(name: 'Axis Bank', balance: 10_000)
-account2.banks.create(name: 'State Bank of India', balance: 2_500)
-account3.banks.create(name: 'State Bank of India', balance: 2_000)
+customer1_bank1 = account1.banks.create(name: 'State Bank of India', balance: 2500)
+customer1_bank2 = account1.banks.create(name: 'Axis Bank', balance: 10_000)
+customer2_bank1 = account2.banks.create(name: 'State Bank of India', balance: 2_500)
+customer3_bank1 = account3.banks.create(name: 'State Bank of India', balance: 2_000)
 puts 'banks created'
 
-account1.ewallets.create(name: 'Paytm', balance: 1000)
-account2.ewallets.create(name: 'Paytm', balance: 1000)
-account3.ewallets.create(name: 'Paytm', balance: 1000)
+customer1_ewallet1 = account1.ewallets.create(name: 'Paytm', balance: 1000)
+customer2_ewallet1 = account2.ewallets.create(name: 'Paytm', balance: 1000)
+customer3_ewallet1 = account3.ewallets.create(name: 'Paytm', balance: 1000)
 puts 'ewallets created'
 
 group1 = customer1.my_groups.create(name: 'Belghar Trip')
@@ -278,15 +278,24 @@ Tagging.create(expense_id: customer3expenses[2].id, tag_id: tag2.id)
 Tagging.create(expense_id: customer3expenses[0].id, tag_id: tag1.id)
 Tagging.create(expense_id: customer3expenses[1].id, tag_id: tag3.id)
 Tagging.create(expense_id: customer3expenses[2].id, tag_id: tag4.id)
-
 puts 'expenses tagged'
 
-account1.transactions.create(amount: 15, balance: 19_000, description: 'expenditure/green chilli/quarter kg')
-account1.transactions.create(amount: 5_000, balance: 14_000, description: 'expenditure/transportation/from bhubaneswar to belghar and back')
-account2.transactions.create(amount: 5, balance: 14_100, description: 'expenditure/coriander/ 1 bundle')
-account2.transactions.create(amount: 5_000, balance: 9_100, description: 'expenditure/resort/AC tent')
-account2.transactions.create(amount: 5_000, balance: 4_100, description: 'expenditure/transportation/from bhubaneswar to daringbadi a nd back')
-account3.transactions.create(amount: 20, balance: 10_100, description: 'expenditure/lemon/4 piece')
-account3.transactions.create(amount: 5_000, balance: 5_100, description: 'expenditure/Resort/AC tent')
-account3.transactions.create(amount: 1_000, balance: 4_100, description: 'expenditure/Ration/ration to cook food')
+customer1_expenditure1 = customer1expenses[0].expenditures.create(amount: 15, balance: 500, expensable: customer1_cash)
+customer1_expenditure2 = customer1expenses[1].expenditures.create(amount: 5_000, balance: 2_500, expensable: customer1_bank1)
+customer2_expenditure1 = customer2expenses[0].expenditures.create(amount: 5, balance: 600, expensable: customer2_cash)
+customer2_expenditure2 = customer2expenses[1].expenditures.create(amount: 5_000, balance: 2_500, expensable: customer2_bank1)
+customer2_expenditure3 = customer2expenses[2].expenditures.create(amount: 5_000, balance: 1_000, expensable: customer2_ewallet1)
+customer3_expenditure1 = customer3expenses[0].expenditures.create(amount: 20, balance: 700, expensable: customer3_cash)
+customer3_expenditure2 = customer3expenses[1].expenditures.create(amount: 5_000, balance: 2_000, expensable: customer3_bank1)
+customer3_expenditure3 = customer3expenses[2].expenditures.create(amount: 1_000, balance: 1_000, expensable: customer3_ewallet1)
+puts 'created expenditure'
+
+account1.transactions.create(amount: 15, balance: 19_000, transactionable: customer1_expenditure1, description: 'expenditure/green chilli/quarter kg')
+account1.transactions.create(amount: 5_000, balance: 14_000, transactionable: customer1_expenditure2, description: 'expenditure/transportation/from bhubaneswar to belghar and back')
+account2.transactions.create(amount: 5, balance: 14_100, transactionable: customer2_expenditure1, description: 'expenditure/coriander/ 1 bundle')
+account2.transactions.create(amount: 5_000, balance: 9_100, transactionable: customer2_expenditure2, description: 'expenditure/resort/AC tent')
+account2.transactions.create(amount: 5_000, balance: 4_100, transactionable: customer2_expenditure3, description: 'expenditure/transportation/from bhubaneswar to daringbadi a nd back')
+account3.transactions.create(amount: 20, balance: 10_100, transactionable: customer3_expenditure1, description: 'expenditure/lemon/4 piece')
+account3.transactions.create(amount: 5_000, balance: 5_100, transactionable: customer3_expenditure2, description: 'expenditure/Resort/AC tent')
+account3.transactions.create(amount: 1_000, balance: 4_100, transactionable: customer3_expenditure3, description: 'expenditure/Ration/ration to cook food')
 puts 'created transactions'

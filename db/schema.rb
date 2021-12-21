@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_20_053930) do
+ActiveRecord::Schema.define(version: 2021_12_21_085026) do
 
   create_table "accounts", charset: "utf8mb4", force: :cascade do |t|
     t.bigint "customer_id"
@@ -64,6 +64,18 @@ ActiveRecord::Schema.define(version: 2021_12_20_053930) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["account_id"], name: "index_ewallets_on_account_id"
+  end
+
+  create_table "expenditures", charset: "utf8mb4", force: :cascade do |t|
+    t.bigint "expense_id"
+    t.string "expensable_type"
+    t.bigint "expensable_id"
+    t.float "amount"
+    t.float "balance"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["expensable_type", "expensable_id"], name: "index_expenditures_on_expensable"
+    t.index ["expense_id"], name: "index_expenditures_on_expense_id"
   end
 
   create_table "expenses", charset: "utf8mb4", force: :cascade do |t|

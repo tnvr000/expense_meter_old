@@ -4,6 +4,7 @@ class Expense < ApplicationRecord
   belongs_to :category
   has_many :taggings, dependent: :destroy
   has_many :tags, through: :taggings
+  has_many :expenditures
 
   # add given tags to current expense.
   # @param tags [Tag]
