@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-# create transactions table
-class CreateTransactions < ActiveRecord::Migration[6.1]
+# create trades table
+class CreateTrades < ActiveRecord::Migration[6.1]
   def change
-    create_table :transactions do |t|
+    create_table :trades do |t|
       t.references :account
-      t.references :transactionable, polymorphic: true
+      t.references :tradable, polymorphic: true
       t.float :amount
       t.float :balance
       t.string :description

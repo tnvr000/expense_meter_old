@@ -290,12 +290,12 @@ customer3_expenditure2 = customer3expenses[1].expenditures.create(amount: 5_000,
 customer3_expenditure3 = customer3expenses[2].expenditures.create(amount: 1_000, balance: 1_000, expensable: customer3_ewallet1)
 puts 'created expenditure'
 
-account1.transactions.create(amount: 15, balance: 19_000, transactionable: customer1_expenditure1, description: 'expenditure/green chilli/quarter kg')
-account1.transactions.create(amount: 5_000, balance: 14_000, transactionable: customer1_expenditure2, description: 'expenditure/transportation/from bhubaneswar to belghar and back')
-account2.transactions.create(amount: 5, balance: 14_100, transactionable: customer2_expenditure1, description: 'expenditure/coriander/ 1 bundle')
-account2.transactions.create(amount: 5_000, balance: 9_100, transactionable: customer2_expenditure2, description: 'expenditure/resort/AC tent')
-account2.transactions.create(amount: 5_000, balance: 4_100, transactionable: customer2_expenditure3, description: 'expenditure/transportation/from bhubaneswar to daringbadi a nd back')
-account3.transactions.create(amount: 20, balance: 10_100, transactionable: customer3_expenditure1, description: 'expenditure/lemon/4 piece')
-account3.transactions.create(amount: 5_000, balance: 5_100, transactionable: customer3_expenditure2, description: 'expenditure/Resort/AC tent')
-account3.transactions.create(amount: 1_000, balance: 4_100, transactionable: customer3_expenditure3, description: 'expenditure/Ration/ration to cook food')
-puts 'created transactions'
+account1.trades.create(amount: 15, balance: 19_000, tradable: customer1_expenditure1, description: 'expenditure/green chilli/quarter kg')
+account1.trades.create(amount: 5_000, balance: 14_000, tradable: customer1_expenditure2, description: 'expenditure/transportation/from bhubaneswar to belghar and back')
+account2.trades.create(amount: 5, balance: 14_100, tradable: customer2_expenditure1, description: 'expenditure/coriander/ 1 bundle')
+account2.trades.create(amount: 5_000, balance: 9_100, tradable: customer2_expenditure2, description: 'expenditure/resort/AC tent')
+account2.trades.create(amount: 5_000, balance: 4_100, tradable: customer2_expenditure3, description: 'expenditure/transportation/from bhubaneswar to daringbadi a nd back')
+account3.trades.create(amount: 20, balance: 10_100, tradable: customer3_expenditure1, description: 'expenditure/lemon/4 piece')
+account3.trades.create(amount: 5_000, balance: 5_100, tradable: customer3_expenditure2, description: 'expenditure/Resort/AC tent')
+account3.trades.create(amount: 1_000, balance: 4_100, tradable: customer3_expenditure3, description: 'expenditure/Ration/ration to cook food')
+puts 'created trades'

@@ -151,17 +151,17 @@ ActiveRecord::Schema.define(version: 2021_12_21_085026) do
     t.index ["customer_id"], name: "index_tags_on_customer_id"
   end
 
-  create_table "transactions", charset: "utf8mb4", force: :cascade do |t|
+  create_table "trades", charset: "utf8mb4", force: :cascade do |t|
     t.bigint "account_id"
-    t.string "transactionable_type"
-    t.bigint "transactionable_id"
+    t.string "tradable_type"
+    t.bigint "tradable_id"
     t.float "amount"
     t.float "balance"
     t.string "description"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["account_id"], name: "index_transactions_on_account_id"
-    t.index ["transactionable_type", "transactionable_id"], name: "index_transactions_on_transactionable"
+    t.index ["account_id"], name: "index_trades_on_account_id"
+    t.index ["tradable_type", "tradable_id"], name: "index_trades_on_tradable"
   end
 
   add_foreign_key "categories", "primary_categories"

@@ -1,0 +1,23 @@
+<% if @trades.present? %>
+  <h2>Trades</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Description</th>
+        <th>Amount</th>
+        <th>Balance</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @trades.each do |trade| %>
+        <tr>
+          <td><%= trade.description %></td>
+          <td><%= trade.amount %></td>
+          <td><%= trade.balance %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
+
+<%= link_to 'Back', account_path %>
