@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# expenses contorller
 class ExpensesController < ApplicationController
   before_action :authenticate_customer!
   before_action :set_expense, only: %i[show edit update destroy]
@@ -23,6 +26,7 @@ class ExpensesController < ApplicationController
     @expense = Expense.new
     @tags = current_customer.tags
     @primary_categories = PrimaryCategory.pluck(:name, :id)
+    @sub_accounts = sub_accounts(current_customer.account)
   end
 
   # GET /expenses/1/edit
@@ -31,6 +35,7 @@ class ExpensesController < ApplicationController
   def edit
     @tags = current_customer.tags
     @primary_categories = PrimaryCategory.pluck(:name, :id)
+    @sub_accounts = sub_accounts(current_customer.account)
   end
 
   # POST /expenses
@@ -43,7 +48,7 @@ class ExpensesController < ApplicationController
   # before_action :authenticate_customer!
   def create
     @expense = current_customer.expenses.build(expense_params)
-    set_date
+    assign_date(params[:expense][:date])
     respond_to do |format|
       if @expense.save
         @expense.add_tags(expense_tags(params[:expense][:tag_ids]))
@@ -64,7 +69,7 @@ class ExpensesController < ApplicationController
   # before_action :authenticate_customer! :set_expense
   def update
     @expense.assign_attributes(expense_params)
-    set_date
+    assign_date(params[:expense][:date])
     respond_to do |format|
       if @expense.save
         @expense.manage_tags(expense_tags(params[:expense][:tag_ids]))
@@ -126,10 +131,23 @@ class ExpensesController < ApplicationController
     current_customer.tags.where(id: tag_ids)
   end
 
-  def set_date
-    return if params[:expense][:date].blank?
+  # set date attribute of exepense given in HTML date format
+  # @param date_string [String]
+  def assign_date(date_string)
+    return if date_string.blank?
 
-    date_part = params[:expense][:date].split('-').map(&:to_i)
+    date_part = date_string.split('-').map(&:to_i)
     @expense.date = Date.new(date_part[0], date_part[1], date_part[2])
+  end
+
+  # returns a hash containing difference sub-accounts of given account
+  # @param account [Account]
+  # return list of sub-accounts [Hash]
+  def sub_accounts(account)
+    {}.tap do |accounts|
+      accounts[:cash]  = account.cash
+      accounts[:banks] = account.banks
+      accounts[:ewallets] = account.ewallets
+    end
   end
 end

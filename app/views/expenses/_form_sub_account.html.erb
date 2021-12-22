@@ -1,0 +1,21 @@
+<div class="field">
+  <fieldset>
+    <legend>Accounts</legend>
+    <label for="expense_sub_account_cash">
+      <%= form.check_box(:sub_accounts, { id: 'expense_sub_account_cash', name: 'expense[sub_accounts][cash]' }, sub_accounts[:cash].id, nil) %>
+      <span>Cash</span>
+    </label>
+    <% sub_accounts[:banks].each do |bank| %>
+      <label for="<%= sub_account_id(bank) %>">
+        <%= form.check_box(:sub_accounts, { id: sub_account_id(bank), name: 'expense[sub_accounts][banks][]' }, bank.id, nil) %>
+        <span><%= bank.name %></span>
+      </label>
+    <% end %>
+    <% sub_accounts[:ewallets].each do |ewallet| %>
+      <label for="<%= sub_account_id(ewallet) %>">
+        <%= form.check_box(:sub_accounts, { id: sub_account_id(ewallet), name: 'expense[sub_accounts][ewallets][]' }, ewallet.id, nil) %>
+        <span><%= ewallet.name %></span>
+      </label>
+    <% end %>
+  </fieldset>
+</div>

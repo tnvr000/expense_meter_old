@@ -20,10 +20,17 @@ module ExpensesHelper
     "expense_tag_#{tag.id}"
   end
 
+  # returns ID for 'for' attribute of label and ID for account checkbox
+  # @param account [Bank] [Ewallet]
+  # @return for attribute and sub_account checkbox ID [String]
+  def sub_account_id(account)
+    "expense_sub_account_#{account.class.to_s.downcase}_#{account.id}"
+  end
+
   # returns options for stimulus category controller
   # @param expense [Expense]
   # @return ananomous [Hash]
-  def stimulus_category_controller_options expense
+  def stimulus_category_controller_options(expense)
     {
       'data-controller' => 'category',
       'data-category-selected-primary-category-value' => expense.try(:category).try(:primary_category).try(:id),
