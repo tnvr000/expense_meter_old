@@ -1,21 +1,26 @@
-<div class="field">
+<%= content_tag(:div, 'data-controller' => 'sub-account') do %>
   <fieldset>
     <legend>Accounts</legend>
     <label for="expense_sub_account_cash">
-      <%= form.check_box(:sub_accounts, { id: 'expense_sub_account_cash', name: 'expense[sub_accounts][cash]' }, sub_accounts[:cash].id, nil) %>
-      <span>Cash</span>
+      <%= form.check_box(:sub_accounts, { id: 'expense_sub_account_cash', name: 'expense[sub_accounts][cash][id]', 'data-action' => 'change->sub-account#enable_amount', 'data-sub-account-id-param' => 'expense_sub_amount_cash' }, sub_accounts[:cash].id, nil) %>
+      <span>Cash <%= "(Rs. #{sub_accounts[:cash].balance})" %></span>
     </label>
+    <%= form.text_field(:sub_amount, { id: 'expense_sub_amount_cash', name: 'expense[sub_accounts][cash][amount]', class: 'hidden', disabled: true, 'data-sub-account-target' => 'cash' }) %>
+
     <% sub_accounts[:banks].each do |bank| %>
       <label for="<%= sub_account_id(bank) %>">
-        <%= form.check_box(:sub_accounts, { id: sub_account_id(bank), name: 'expense[sub_accounts][banks][]' }, bank.id, nil) %>
-        <span><%= bank.name %></span>
+        <%= form.check_box(:sub_accounts, { id: sub_account_id(bank), name: sub_account_id_name(bank), 'data-action' => 'change->sub-account#enable_amount', 'data-sub-account-id-param' => amount_text_id(bank) }, bank.id, nil) %>
+        <span><%= "#{bank.name} (Rs. #{bank.balance})" %></span>
       </label>
+      <%= form.text_field(:sub_amount, { id: amount_text_id(bank), name: sub_account_amount_name(bank), class: 'hidden', disabled: true, 'data-sub-account-target' => 'bank' }) %>
     <% end %>
+
     <% sub_accounts[:ewallets].each do |ewallet| %>
       <label for="<%= sub_account_id(ewallet) %>">
-        <%= form.check_box(:sub_accounts, { id: sub_account_id(ewallet), name: 'expense[sub_accounts][ewallets][]' }, ewallet.id, nil) %>
-        <span><%= ewallet.name %></span>
+        <%= form.check_box(:sub_accounts, { id: sub_account_id(ewallet), name: sub_account_id_name(ewallet), 'data-action' => 'change->sub-account#enable_amount', 'data-sub-account-id-param' => amount_text_id(ewallet) }, ewallet.id, nil) %>
+        <span><%= "#{ewallet.name} (Rs. #{ewallet.balance})" %></span>
       </label>
+      <%= form.text_field(:sub_amount, { id: amount_text_id(ewallet), name: sub_account_amount_name(ewallet), class: 'hidden', disabled: true, 'data-sub-account-target' => 'ewallet' }) %>
     <% end %>
   </fieldset>
-</div>
+<% end %>

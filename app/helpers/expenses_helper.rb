@@ -27,6 +27,27 @@ module ExpensesHelper
     "expense_sub_account_#{account.class.to_s.downcase}_#{account.id}"
   end
 
+  # returns ID for sub amount textfield
+  # @param account [Bank] [Ewallet]
+  # @return sub amount ID [String]
+  def amount_text_id(account)
+    "expense_sub_amount_#{account.class.to_s.downcase}_#{account.id}"
+  end
+
+  # returns name for sub account checkbox
+  # @param account [Bank] [Ewallet]
+  # @return sub account chechbox name [String]
+  def sub_account_id_name(account)
+    "expense[sub_accounts][#{account.class.to_s.downcase}s][][id]"
+  end
+
+  # returns name for sub amount textfield
+  # @param account [Bank] [Ewallet]
+  # @return sub amount text field name [String]
+  def sub_account_amount_name(account)
+    "expense[sub_accounts][#{account.class.to_s.downcase}s][][amount]"
+  end
+
   # returns options for stimulus category controller
   # @param expense [Expense]
   # @return ananomous [Hash]
