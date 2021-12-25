@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# module helper methods in expeneses view
 module ExpensesHelper
   # checks is Back button should link to show group page or index expenses page
   # @param group [Group]
@@ -46,6 +49,27 @@ module ExpensesHelper
   # @return sub amount text field name [String]
   def sub_account_amount_name(account)
     "expense[sub_accounts][#{account.class.to_s.downcase}s][][amount]"
+  end
+
+  # checks if given sub-account needs to be checked
+  # @param account [Cash] [Bank] [Ewallet]
+  # @param payment_from [Hash]
+  # @return sub-account checked status [Boolean] 
+  def sub_account_checked?(account, payment_from)
+    payment_from[account.class.to_s.downcase].present? &&
+      payment_from[account.class.to_s.downcase][account.id].present?
+  end
+
+  # returns amount for given sub-account if present
+  # @param account [Cash] [Bank] [Ewallet]
+  # @param amount [Integer]
+  # @return amount [Integer]
+  def sub_account_amount(account, payment_from)
+    if sub_account_checked?(account, payment_from)
+      payment_from[account.class.to_s.downcase][account.id]
+    else
+      ''
+    end
   end
 
   # returns options for stimulus category controller

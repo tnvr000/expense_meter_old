@@ -36,6 +36,7 @@ class ExpensesController < ApplicationController
     @tags = current_customer.tags
     @primary_categories = PrimaryCategory.pluck(:name, :id)
     @sub_accounts = sub_accounts(current_customer.account)
+    @payment_from = categorize_expenditures_acc_to_sub_accounts(@expense.expenditures)
   end
 
   # POST /expenses
@@ -149,5 +150,19 @@ class ExpensesController < ApplicationController
       accounts[:banks] = account.banks
       accounts[:ewallets] = account.ewallets
     end
+  end
+
+  # categorizes given expenditure collection according to sub-accounts(Cash, Bank, Ewallet) so
+  # that it is easily consumed by expenses view
+  # @param expenditures [ActiveRecord::Associations::CollectionProxy::Expenditure]
+  # @return categorized expenditure [Hash]
+  def categorize_expenditures_acc_to_sub_accounts(expenditures)
+    payment_from = {}
+    expenditures.each do |expenditure|
+      payment_from[expenditure.expensable_type.downcase] = {
+        expenditure.expensable_id => expenditure.amount
+      }
+    end
+    payment_from
   end
 end
