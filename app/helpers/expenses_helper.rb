@@ -24,28 +24,28 @@ module ExpensesHelper
   end
 
   # returns ID for 'for' attribute of label and ID for account checkbox
-  # @param account [Bank] [Ewallet]
+  # @param account [Cash] [Bank] [Ewallet]
   # @return for attribute and sub_account checkbox ID [String]
-  def sub_account_id(account)
+  def sub_account_checkbox_id(account)
     "expense_sub_account_#{account.class.to_s.downcase}_#{account.id}"
   end
 
   # returns ID for sub amount textfield
-  # @param account [Bank] [Ewallet]
+  # @param account [Cash] [Bank] [Ewallet]
   # @return sub amount ID [String]
-  def amount_text_id(account)
+  def sub_account_amount_id(account)
     "expense_sub_amount_#{account.class.to_s.downcase}_#{account.id}"
   end
 
   # returns name for sub account checkbox
-  # @param account [Bank] [Ewallet]
+  # @param account [Cash] [Bank] [Ewallet]
   # @return sub account chechbox name [String]
-  def sub_account_id_name(account)
+  def sub_account_checkbox_name(account)
     "expense[sub_accounts][#{account.class.to_s.downcase}s][][id]"
   end
 
   # returns name for sub amount textfield
-  # @param account [Bank] [Ewallet]
+  # @param account [Cash] [Bank] [Ewallet]
   # @return sub amount text field name [String]
   def sub_account_amount_name(account)
     "expense[sub_accounts][#{account.class.to_s.downcase}s][][amount]"
@@ -62,7 +62,7 @@ module ExpensesHelper
 
   # returns amount for given sub-account if present
   # @param account [Cash] [Bank] [Ewallet]
-  # @param amount [Integer]
+  # @param payment_from [Hash]
   # @return amount [Integer]
   def sub_account_amount(account, payment_from)
     if sub_account_checked?(account, payment_from)
@@ -70,6 +70,37 @@ module ExpensesHelper
     else
       ''
     end
+  end
+
+  # return options for sub-account checkbox
+  # @param account [Cash] [Bank] [ewallet]
+  # @param payment_from [Hash]
+  # @return options for sub-account checkbox [Hash]
+  def sub_account_checkbox_options(account, payment_from)
+    {
+      id: sub_account_checkbox_id(account),
+      name: sub_account_checkbox_name(account),
+      checked: sub_account_checked?(account, payment_from),
+      autocomplete: 'off',
+      'data-sub-account-target' => 'useSubAccount',
+      'data-action' => 'change->sub-account#enable_amount',
+      'data-sub-account-id-param' => sub_account_amount_id(account)
+    }
+  end
+
+  # return options for sub-account amount textfield
+  # @param account [Cash] [Bank] [ewallet]
+  # @param payment_from [Hash]
+  # @return options for sub-account amount [Hash]
+  def sub_account_amount_options(account, payment_from)
+    {
+      id: sub_account_amount_id(account),
+      name: sub_account_amount_name(account),
+      class: 'hidden',
+      disabled: true,
+      autocomplete: 'off',
+      value: sub_account_amount(account, payment_from)
+    }
   end
 
   # returns options for stimulus category controller

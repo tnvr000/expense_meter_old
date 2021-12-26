@@ -1,0 +1,5 @@
+<label for="<%= sub_account_checkbox_id(account) %>">
+  <%= form.check_box(:sub_accounts, sub_account_checkbox_options(account, payment_from), account.id, nil) %>
+  <span><%= account.try(:name) || account.class.to_s %> <%= "(Rs. #{account.balance})" %></span>
+</label>
+<%= form.text_field(:sub_amount, sub_account_amount_options(account, payment_from)) %>

@@ -1,0 +1,15 @@
+<%= content_tag(:div, 'data-controller' => 'sub-account') do %>
+  <fieldset>
+    <legend>Accounts</legend>
+
+    <%= render "sub_account", form: form, account: sub_accounts[:cash], payment_from: payment_from %>
+
+    <% sub_accounts[:banks].each do |bank| %>
+      <%= render "sub_account", form: form, account: bank, payment_from: payment_from %>
+    <% end %>
+
+    <% sub_accounts[:ewallets].each do |ewallet| %>
+      <%= render "sub_account", form: form, account: ewallet, payment_from: payment_from %>
+    <% end %>
+  </fieldset>
+<% end %>
